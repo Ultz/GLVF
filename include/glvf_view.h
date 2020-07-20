@@ -3,6 +3,11 @@
 #include "glvf_features.h"
 
 GLVF_DEFINE_HANDLE(GLVFView);
+typedef enum {
+	GLVF_BUFFER_KIND_DEPTH,
+	GLVF_BUFFER_KIND_STENCIL,
+	GLVF_FORCE_32_BIT = 2147483647
+} GLVFBufferKind;
 
 typedef struct {
 	GLVFBufferKind buffer;
@@ -19,11 +24,6 @@ typedef enum {
 	GLVF_STENCIL_R8
 } GLVFBits;
 
-typedef enum {
-	GLVF_BUFFER_KIND_DEPTH,
-	GLVF_BUFFER_KIND_STENCIL,
-	GLVF_FORCE_32_BIT = 2147483647
-} GLVFBufferKind;
 
 typedef struct {
 	GLVFStructureType sType;
@@ -35,5 +35,5 @@ typedef struct {
 
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result);
 GLVFBool glvfIsViewActive(GLVFView view);
-void glvfBootstrapView();
+void glvfBootstrapView(GLVFMainFunction fn);
 GLVFResult glvfDestroyView(GLVFView view);

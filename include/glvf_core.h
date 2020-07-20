@@ -1,5 +1,7 @@
 #define GLVF_DEFINE_HANDLE(object) typedef struct object##Handle* object;
 
+#include <cstdint>
+
 // One of these will be defined:
 // GLVF_PLATFORM_IOS - iOS
 // GLVF_PLATFORM_ANDROID - Android
@@ -38,13 +40,13 @@ typedef enum {
 	GLVF_FORCE_32_BIT = 2147483647
 } GLVFStructureType;
 
+GLVF_DEFINE_HANDLE(GLVFInstance);
+
 typedef void (*GLVFMainFunction)(GLVFInstance instance, GLVFView view);
 typedef int8_t GLVFBool;
 
 const GLVFBool GLVF_TRUE = 1;
 const GLVFBool GLVF_FALSE = 0;
-
-GLVF_DEFINE_HANDLE(GLVFInstance);
 
 GLVFResult glvfCreateInstance(GLVFInstance* output);
 GLVFBool glvfIsMultiInstanceSupported();
