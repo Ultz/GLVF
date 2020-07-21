@@ -18,6 +18,7 @@ void _glvfEnsurePlatformCreated() {
 GLVFResult glvfCreateInstance(GLVFInstance* output)
 {
 	_glvfEnsurePlatformCreated();
+	*output = (GLVFInstance)CurrentPlatform->createInstance();
 }
 
 GLVFBool glvfIsMultiInstanceSupported()
@@ -29,4 +30,5 @@ GLVFBool glvfIsMultiInstanceSupported()
 void glvfDestroyInstance(GLVFInstance instance)
 {
 	_glvfEnsurePlatformCreated();
+	delete instance;
 }

@@ -41,6 +41,7 @@ typedef enum {
 } GLVFStructureType;
 
 GLVF_DEFINE_HANDLE(GLVFInstance);
+GLVF_DEFINE_HANDLE(GLVFView);
 
 typedef void (*GLVFMainFunction)(GLVFInstance instance, GLVFView view);
 typedef int8_t GLVFBool;

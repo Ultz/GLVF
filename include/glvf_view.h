@@ -2,17 +2,11 @@
 #include "glvf_rendering_api.h"
 #include "glvf_features.h"
 
-GLVF_DEFINE_HANDLE(GLVFView);
 typedef enum {
 	GLVF_BUFFER_KIND_DEPTH,
 	GLVF_BUFFER_KIND_STENCIL,
 	GLVF_FORCE_32_BIT = 2147483647
 } GLVFBufferKind;
-
-typedef struct {
-	GLVFBufferKind buffer;
-	GLVFBits preferredBits;
-} GLVFBufferBits;
 
 typedef enum {
 	GLVF_DONT_CARE,
@@ -23,6 +17,11 @@ typedef enum {
 	GLVF_DEPTH_R24,
 	GLVF_STENCIL_R8
 } GLVFBits;
+
+typedef struct {
+	GLVFBufferKind buffer;
+	GLVFBits preferredBits;
+} GLVFBufferBits;
 
 
 typedef struct {

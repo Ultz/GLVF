@@ -4,5 +4,5 @@
 class GlfwPlatform : public Platform {
 public:
 	bool isMultiInstance();
-
+	Instance* createInstance();
 };
