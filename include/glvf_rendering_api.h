@@ -1,3 +1,6 @@
+#pragma once
+#ifndef GLVF_RENDERING_API_H
+#define GLVF_RENDERING_API_H
 #include "glvf_core.h"
 #include <cstdint>
 
@@ -17,3 +20,4 @@ typedef struct {
 } GLVFRenderingApi;
 
 GLVFResult glvfEnumerateInstanceRenderingApis(GLVFInstance instance, uint32_t index, uint32_t* pCount, GLVFRenderingApi* pApis);
+#endif

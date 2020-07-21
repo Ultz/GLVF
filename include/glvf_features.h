@@ -1,3 +1,6 @@
+#pragma once
+#ifndef GLVF_FEATURES_H
+#define GLVF_FEATURES_H
 #include "glvf_core.h"
 
 typedef enum {
@@ -20,3 +23,4 @@ typedef enum {
 } GLVFFeatureFlags;
 
 GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFlags* result);
+#endif

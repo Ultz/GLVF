@@ -1,3 +1,6 @@
+#pragma once
+#ifndef GLVF_CORE_H
+#define GLVF_CORE_H
 #define GLVF_DEFINE_HANDLE(object) typedef struct object##Handle* object;
 
 #include <cstdint>
@@ -52,3 +55,4 @@ const GLVFBool GLVF_FALSE = 0;
 GLVFResult glvfCreateInstance(GLVFInstance* output);
 GLVFBool glvfIsMultiInstanceSupported();
 void glvfDestroyInstance(GLVFInstance instance);
+#endif

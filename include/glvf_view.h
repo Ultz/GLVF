@@ -1,3 +1,6 @@
+#pragma once
+#ifndef GLVF_VIEW_H
+#define GLVF_VIEW_H
 #include "glvf_core.h"
 #include "glvf_rendering_api.h"
 #include "glvf_features.h"
@@ -34,5 +37,6 @@ typedef struct {
 
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result);
 GLVFBool glvfIsViewActive(GLVFView view);
-void glvfBootstrapView(GLVFMainFunction fn);
+GLVFResult glvfBootstrapView(GLVFView view, GLVFMainFunction fn);
 GLVFResult glvfDestroyView(GLVFView view);
+#endif

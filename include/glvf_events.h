@@ -1,3 +1,7 @@
+#pragma once
+#ifndef GLVF_EVENTS_H
+#define GLVF_EVENTS_H
+
 #include "glvf_core.h"
 #include "glvf_view.h"
 #include <cstdint>
@@ -45,3 +49,4 @@ GLVFResult glvfCreateEventPump(GLVFInstance instance, GLVFEventPump* result);
 GLVFResult glvfEnumerateEvents(GLVFEventPump pump, uint32_t index, uint32_t* pCount, GLVFEvent* pEvents);
 GLVFResult glvfClearEvents(GLVFEventPump pump);
 GLVFResult glvfDestroyEventPump(GLVFEventPump pump);
+#endif

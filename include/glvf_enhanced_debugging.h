@@ -1,5 +1,10 @@
+#pragma once
+#ifndef GLVF_ENHANCED_DEBUGGING_H
+#define GLVF_ENHANCED_DEBUGGING_H
+
 #include "glvf_core.h"
 #include <cstdint>
+
 
 typedef struct {
 	// seeing as this is a struct that never flows in, it doesn't have an sType
@@ -14,3 +19,5 @@ GLVFResult glvfCreateErrorPump(GLVFInstance instance, GLVFErrorPump* result);
 GLVFResult glvfEnumerateErrors(GLVFErrorPump pump, uint32_t index, uint32_t* pCount, GLVFError* pErrors);
 GLVFResult glvfClearErrors(GLVFErrorPump pump);
 GLVFResult glvfDestroyErrorPump(GLVFErrorPump pump);
+
+#endif
