@@ -16,8 +16,7 @@ typedef struct {
 GLVF_DEFINE_HANDLE(GLVFErrorPump);
 
 GLVFResult glvfCreateErrorPump(GLVFInstance instance, GLVFErrorPump* result);
-GLVFResult glvfEnumerateErrors(GLVFErrorPump pump, uint32_t index, uint32_t* pCount, GLVFError* pErrors);
-GLVFResult glvfClearErrors(GLVFErrorPump pump);
-GLVFResult glvfDestroyErrorPump(GLVFErrorPump pump);
+GLVFResult glvfEnumerateErrors(GLVFErrorPump pump, uint32_t* pCount, GLVFError* pErrors);
+void glvfDestroyErrorPump(GLVFErrorPump pump);
 
 #endif

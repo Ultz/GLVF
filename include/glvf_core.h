@@ -34,14 +34,10 @@ typedef enum {
 	GLVF_ERROR_INVALID_PLATFORM, // The operation can't be completed on this platform.
 	GLVF_ERROR_FEATURE_NOT_AVAILABLE, // Attempted to access or enable an unavailable feature
 	GLVF_ERROR_DUPLICATE, // Attempted to create duplicate object. For example, attempting to create another event pump for a view (there can only be one).
-	GLVF_FORCE_32_BIT = 2147483647
+	GLVF_ERROR_NO_PLATFORM,
+	GLVF_ERROR_BAD_PARAMETER,
+	GLVF_RESULT_FORCE_32_BIT = 2147483647
 } GLVFResult;
-
-typedef enum {
-	GLVF_VIEW_CREATE_INFO,
-	GLVF_APPLICATION_INFO,
-	GLVF_FORCE_32_BIT = 2147483647
-} GLVFStructureType;
 
 GLVF_DEFINE_HANDLE(GLVFInstance);
 GLVF_DEFINE_HANDLE(GLVFView);

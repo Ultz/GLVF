@@ -18,8 +18,9 @@ typedef enum {
 	GLVF_FEATURE_MOUSE_INPUT = 2048, // Enables the receipt of mouse input.
 	GLVF_FEATURE_JOYSTICK_INPUT = 4096, // Enables the receipt of joystick input.
 	GLVF_FEATURE_GAMEPAD_INPUT = 8192, // Enables the receipt of gamepad input.
-	GLVF_FEATURE_ENHANCED_DEBUGGING = 16384, // Allows the creation and usage of GLVF error pumps.
-	GLVF_FORCE_32_BIT = 2147483647,
+	GLVF_FEATURE_EVENT_DRIVEN_PUMP = 16384,
+	GLVF_FEATURE_ENHANCED_DEBUGGING = 32768, // Allows the creation and usage of GLVF error pumps.
+	GLVF_FEATURE_FORCE_32_BIT = 2147483647,
 } GLVFFeatureFlags;
 
 GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFlags* result);

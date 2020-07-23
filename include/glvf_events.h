@@ -6,11 +6,13 @@
 #include "glvf_view.h"
 #include <cstdint>
 
+typedef enum {
+	GLVF_EVENT_PUMP_PNAME_EVENT_DRIVEN
+} GLVFEventPumpPName;
+
 typedef struct {
-	GLVFEventKind kind; // kind is the sType
-	uint32_t timestamp;
-	int8_t padding[56];
-} GLVFEvent;
+	GLVFBool isEventDriven;
+} GLVFEventPumpCreateInfo;
 
 typedef enum {
 	GLVF_EVENT_KIND_EMPTY,
@@ -34,8 +36,14 @@ typedef enum {
 	GLVF_EVENT_KIND_GAMEPAD_BUTTON_UP,
 	GLVF_EVENT_KIND_GAMEPAD_THUMBSTICK_MOVE,
 	GLVF_EVENT_KIND_GAMEPAD_TRIGGER_MOVE,
-	GLVF_FORCE_32_BIT = 2147483647
+	GLVF_EVENT_KIND_FORCE_32_BIT = 2147483647
 } GLVFEventKind;
+
+typedef struct {
+	GLVFEventKind kind; // kind is the sType
+	uint32_t timestamp;
+	int8_t padding[56];
+} GLVFEvent;
 
 // TODO GLVFKeyEvent
 // TODO GLVFCharEvent
@@ -45,8 +53,9 @@ typedef enum {
 
 GLVF_DEFINE_HANDLE(GLVFEventPump);
 
-GLVFResult glvfCreateEventPump(GLVFInstance instance, GLVFEventPump* result);
-GLVFResult glvfEnumerateEvents(GLVFEventPump pump, uint32_t index, uint32_t* pCount, GLVFEvent* pEvents);
-GLVFResult glvfClearEvents(GLVFEventPump pump);
-GLVFResult glvfDestroyEventPump(GLVFEventPump pump);
+GLVFResult glvfCreateEventPump(GLVFView view, const GLVFEventPumpCreateInfo* info, GLVFEventPump* result);
+GLVFResult glvfGetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name, void* value);
+GLVFResult glvfSetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name, void* value);
+GLVFResult glvfEnumerateEvents(GLVFEventPump pump, uint32_t* pCount, GLVFEvent* pEvents);
+void glvfDestroyEventPump(GLVFEventPump pump);
 #endif
