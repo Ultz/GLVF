@@ -36,6 +36,7 @@ typedef enum {
 	GLVF_ERROR_DUPLICATE, // Attempted to create duplicate object. For example, attempting to create another event pump for a view (there can only be one).
 	GLVF_ERROR_NO_PLATFORM,
 	GLVF_ERROR_BAD_PARAMETER,
+	GLVF_ERROR_FAILED_TO_BOOTSTRAP,
 	GLVF_RESULT_FORCE_32_BIT = 2147483647
 } GLVFResult;
 

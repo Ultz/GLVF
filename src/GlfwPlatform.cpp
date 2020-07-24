@@ -1,4 +1,8 @@
 #include "GlfwPlatform.h"
+#include "GlfwInstance.h"
+#include <GLFW/glfw3.h>
+
+Instance* instance;
 
 bool GlfwPlatform::allowMultiInstance()
 {
@@ -7,10 +11,29 @@ bool GlfwPlatform::allowMultiInstance()
 
 GLVFResult GlfwPlatform::createInstance(Instance** output)
 {
-    return GLVFResult();
+    if (instance != nullptr)
+    {
+        return GLVF_ERROR_DUPLICATE;
+    }
+
+    if (!glfwInit())
+    {
+        return GLVF_ERROR_FAILED_TO_BOOTSTRAP;
+    }
+    
+    *output = instance = new GlfwInstance();
+    instance->platform = this;
 }
 
 void GlfwPlatform::destroyInstance(Instance* input)
 {
+    if (instance != input)
+    {
+        // bad handle
+        return;
+    }
+
+    ((GlfwInstance*)input)->destroying();
     delete input;
+    glfwTerminate();
 }

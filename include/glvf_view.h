@@ -63,10 +63,10 @@ typedef enum {
 	GLVF_VIEW_STATE_PAUSED,
 	GLVF_VIEW_STATE_CLOSE_REQUESTED,
 	GLVF_VIEW_STATE_FORCE_32_BIT = 2147483647
-} GLVFViewState;
+} GLVFViewStatus;
 
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result);
-GLVFResult glvfQueryViewState(GLVFView view, GLVFViewState* state);
+GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state);
 GLVFResult glvfBootstrapView(GLVFView view, GLVFMainFunction fn);
 void glvfDestroyView(GLVFView view);
 

@@ -2,6 +2,7 @@
 #include "Platform.h"
 #ifdef GLVF_PLATFORM_GLFW
 #include "GlfwPlatform.h"
+#include "..\include\glvf_view_extras.h"
 #endif
 
 // Implementation Internals
@@ -109,11 +110,11 @@ GLVFResult glvfGetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name,
 	EventPump* actualEventPump = (EventPump*)pump;
 	switch (name)
 	{
-    	case GLVF_EVENT_PUMP_PNAME_EVENT_DRIVEN:
-			*((GLVFBool*)value) = actualEventPump->waitEvents;
-			return GLVF_OK;
-		default:
-			return GLVF_ERROR_BAD_PARAMETER;
+	case GLVF_EVENT_PUMP_PNAME_BOOL_EVENT_DRIVEN:
+		*((GLVFBool*)value) = actualEventPump->waitEvents;
+		return GLVF_OK;
+	default:
+		return GLVF_ERROR_BAD_PARAMETER;
 	}
 }
 
@@ -122,11 +123,11 @@ GLVFResult glvfSetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name,
 	EventPump* actualEventPump = (EventPump*)pump;
 	switch (name)
 	{
-	    case GLVF_EVENT_PUMP_PNAME_EVENT_DRIVEN:
-	    	actualEventPump->waitEvents = *((GLVFBool*)value);
-	    	return GLVF_OK;
-	    default:
-	    	return GLVF_ERROR_BAD_PARAMETER;
+	case GLVF_EVENT_PUMP_PNAME_BOOL_EVENT_DRIVEN:
+		actualEventPump->waitEvents = *((GLVFBool*)value);
+		return GLVF_OK;
+	default:
+		return GLVF_ERROR_BAD_PARAMETER;
 	}
 }
 
@@ -168,7 +169,7 @@ GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info,
 	return ((Instance*)instance)->createView(info, (View**)result);
 }
 
-GLVFResult glvfQueryViewState(GLVFView view, GLVFViewState* state)
+GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state)
 {
 	*state = ((View*)view)->getState();
 	return GLVF_OK;
@@ -182,4 +183,51 @@ GLVFResult glvfBootstrapView(GLVFView view, GLVFMainFunction fn)
 void glvfDestroyView(GLVFView view)
 {
 	((View*)view)->instance->destroyView((View*)view);
+}
+
+// View Extras
+GLVFResult glvfGetViewProperty(GLVFView view, GLVFViewPName name, void* value)
+{
+	switch (name)
+	{
+	case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
+		return ((View*)view)->getVisibility((GLVFBool*)value);
+	case GLVF_VIEW_PNAME_VEC2I_POSITION:
+		return ((View*)view)->getPosition((int32_t*)value);
+	case GLVF_VIEW_PNAME_VEC2I_SIZE:
+		return ((View*)view)->getSize((int32_t*)value);
+	case GLVF_VIEW_PNAME_STRING_TITLE:
+		return ((View*)view)->getTitle((int8_t**)value);
+	case GLVF_VIEW_PNAME_ENUM_UI:
+		return ((View*)view)->getUI((GLVFUserInterface*)value);
+	case GLVF_VIEW_PNAME_ENUM_WINDOW_STATE:
+		return ((View*)view)->getWindowState((GLVFWindowState*)value);
+	case GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE:
+		return ((View*)view)->getVideoMode((GLVFVideoMode*)value);
+	default:
+		return GLVF_ERROR_BAD_PARAMETER;
+	}
+}
+
+GLVFResult glvfSetViewProperty(GLVFView view, GLVFViewPName name, void* value)
+{
+	switch (name)
+	{
+	case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
+		return ((View*)view)->setVisibility((GLVFBool*)value);
+	case GLVF_VIEW_PNAME_VEC2I_POSITION:
+		return ((View*)view)->setPosition((int32_t*)value);
+	case GLVF_VIEW_PNAME_VEC2I_SIZE:
+		return ((View*)view)->setSize((int32_t*)value);
+	case GLVF_VIEW_PNAME_STRING_TITLE:
+		return ((View*)view)->setTitle((int8_t**)value);
+	case GLVF_VIEW_PNAME_ENUM_UI:
+		return ((View*)view)->setUI((GLVFUserInterface*)value);
+	case GLVF_VIEW_PNAME_ENUM_WINDOW_STATE:
+		return ((View*)view)->setWindowState((GLVFWindowState*)value);
+	case GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE:
+		return ((View*)view)->setVideoMode((GLVFVideoMode*)value);
+	default:
+		return GLVF_ERROR_BAD_PARAMETER;
+	}
 }

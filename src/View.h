@@ -9,7 +9,21 @@ public:
 	class EventPump* eventPump;
 	GLVFResult createEventPump(const GLVFEventPumpCreateInfo* info);
 	void destroyEventPump();
-	GLVFViewState getState();
-	GLVFResult bootstrap(GLVFMainFunction fn);
+	virtual GLVFViewStatus getState() = 0;
+	virtual GLVFResult bootstrap(GLVFMainFunction fn) = 0;
+	virtual GLVFResult getVisibility(GLVFBool* result) = 0;
+	virtual GLVFResult getPosition(int32_t* result) = 0;
+	virtual GLVFResult getSize(int32_t* result) = 0;
+	virtual GLVFResult getTitle(int8_t** result) = 0;
+	virtual GLVFResult getUI(GLVFUserInterface* result) = 0;
+	virtual GLVFResult getWindowState(GLVFWindowState* result) = 0;
+	virtual GLVFResult getVideoMode(GLVFVideoMode* result) = 0;
+	virtual GLVFResult setVisibility(GLVFBool* value) = 0;
+	virtual GLVFResult setPosition(int32_t* value) = 0;
+	virtual GLVFResult setSize(int32_t* value) = 0;
+	virtual GLVFResult setTitle(int8_t** value) = 0;
+	virtual GLVFResult setUI(GLVFUserInterface* value) = 0;
+	virtual GLVFResult setWindowState(GLVFWindowState* value) = 0;
+	virtual GLVFResult setVideoMode(GLVFVideoMode* value) = 0;
 };
 #endif

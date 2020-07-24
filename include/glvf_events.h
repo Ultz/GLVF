@@ -7,7 +7,7 @@
 #include <cstdint>
 
 typedef enum {
-	GLVF_EVENT_PUMP_PNAME_EVENT_DRIVEN
+	GLVF_EVENT_PUMP_PNAME_BOOL_EVENT_DRIVEN
 } GLVFEventPumpPName;
 
 typedef struct {

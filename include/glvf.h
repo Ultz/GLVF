@@ -6,4 +6,5 @@
 #include "glvf_features.h"
 #include "glvf_view.h"
 #include "glvf_events.h"
+#include "glvf_view_extras.h"
 #endif
