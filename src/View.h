@@ -9,6 +9,7 @@ public:
 	class EventPump* eventPump;
 	GLVFResult createEventPump(const GLVFEventPumpCreateInfo* info);
 	void destroyEventPump();
+	virtual void destroying();
 	virtual GLVFViewStatus getState() = 0;
 	virtual GLVFResult bootstrap(GLVFMainFunction fn) = 0;
 	virtual GLVFResult getVisibility(GLVFBool* result) = 0;
@@ -25,5 +26,8 @@ public:
 	virtual GLVFResult setUI(GLVFUserInterface* value) = 0;
 	virtual GLVFResult setWindowState(GLVFWindowState* value) = 0;
 	virtual GLVFResult setVideoMode(GLVFVideoMode* value) = 0;
+	virtual GLVFResult makeCurrent() = 0;
+	virtual GLVFResult swapBuffers() = 0;
+	virtual GLVFResult swapInterval(int32_t interval) = 0;
 };
 #endif

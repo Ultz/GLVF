@@ -1,4 +1,6 @@
 #include "GlfwInstance.h"
+#include "GlfwInstance.h"
+#include "GlfwInstance.h"
 #include <GLFW/glfw3.h>
 
 GlfwInstance::GlfwInstance()
@@ -32,4 +34,16 @@ void GlfwInstance::destroyView(View* view)
 
 void GlfwInstance::destroying()
 {
+}
+
+GLVFResult GlfwInstance::getViewForCurrentContext(View** output)
+{
+	*output = (View*)glfwGetWindowUserPointer(glfwGetCurrentContext());
+	return GLVF_OK;
+}
+
+GLVFResult GlfwInstance::clearCurrentContext()
+{
+	glfwMakeContextCurrent(NULL);
+	return GLVF_OK;
 }

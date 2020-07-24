@@ -23,6 +23,7 @@ GLVFResult GlfwPlatform::createInstance(Instance** output)
     
     *output = instance = new GlfwInstance();
     instance->platform = this;
+    return GLVF_OK;
 }
 
 void GlfwPlatform::destroyInstance(Instance* input)

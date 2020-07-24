@@ -3,6 +3,7 @@
 #ifdef GLVF_PLATFORM_GLFW
 #include "GlfwPlatform.h"
 #include "..\include\glvf_view_extras.h"
+#include "..\include\glvf_opengl.h"
 #endif
 
 // Implementation Internals
@@ -230,4 +231,31 @@ GLVFResult glvfSetViewProperty(GLVFView view, GLVFViewPName name, void* value)
 	default:
 		return GLVF_ERROR_BAD_PARAMETER;
 	}
+}
+
+// OpenGL support
+
+GLVFResult glvfQueryCurrentContext(GLVFInstance instance, GLVFView* result)
+{
+	return ((Instance*)instance)->getViewForCurrentContext((View**)result);
+}
+
+GLVFResult glvfMakeContextCurrent(GLVFView view)
+{
+	return ((View*)view)->makeCurrent();
+}
+
+GLVFResult glvfClearCurrentContext(GLVFInstance instance)
+{
+	return ((Instance*)instance)->clearCurrentContext();
+}
+
+GLVFResult glvfSwapBuffers(GLVFView view)
+{
+	return ((View*)view)->swapBuffers();
+}
+
+GLVFResult glvfSwapInterval(GLVFView view, int32_t interval)
+{
+	return ((View*)view)->swapInterval(interval);
 }

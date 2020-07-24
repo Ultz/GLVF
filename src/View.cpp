@@ -18,3 +18,7 @@ void View::destroyEventPump()
 	delete eventPump;
 	eventPump = nullptr;
 }
+
+void View::destroying()
+{
+}

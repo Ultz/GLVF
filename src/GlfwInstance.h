@@ -7,8 +7,10 @@ class GlfwInstance : public Instance
 {
 public:
 	GlfwInstance();
-	GLVFResult createView(const GLVFViewCreateInfo* input, class View** output);
-	void destroyView(class View* view);
+	GLVFResult createView(const GLVFViewCreateInfo* input, class View** output) override;
+	void destroyView(class View* view) override;
 	void destroying();
+	virtual GLVFResult getViewForCurrentContext(View** output) override;
+	virtual GLVFResult clearCurrentContext() override;
 };
 #endif
