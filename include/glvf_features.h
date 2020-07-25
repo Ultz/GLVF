@@ -25,4 +25,5 @@ typedef enum {
 } GLVFFeatureFlags;
 
 GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFlags* result);
+GLVFResult glvfQueryEnabledFeatures(GLVFView view, GLVFFeatureFlags* result);
 #endif

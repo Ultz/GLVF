@@ -44,6 +44,7 @@ GLVF_DEFINE_HANDLE(GLVFInstance);
 GLVF_DEFINE_HANDLE(GLVFView);
 
 typedef void (*GLVFMainFunction)(GLVFInstance instance, GLVFView view);
+typedef void (*GLVFVoidFunction)(void);
 typedef int8_t GLVFBool;
 
 const GLVFBool GLVF_TRUE = 1;

@@ -2,8 +2,6 @@
 #include "Platform.h"
 #ifdef GLVF_PLATFORM_GLFW
 #include "GlfwPlatform.h"
-#include "..\include\glvf_view_extras.h"
-#include "..\include\glvf_opengl.h"
 #endif
 
 // Implementation Internals
@@ -163,6 +161,12 @@ GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFla
 	return GLVF_OK;
 }
 
+GLVFResult glvfQueryEnabledFeatures(GLVFView view, GLVFFeatureFlags* result)
+{
+	*result = ((View*)view)->enabledFeatures;
+	return GLVF_OK;
+}
+
 // Views
 
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result)
@@ -258,4 +262,53 @@ GLVFResult glvfSwapBuffers(GLVFView view)
 GLVFResult glvfSwapInterval(GLVFView view, int32_t interval)
 {
 	return ((View*)view)->swapInterval(interval);
+}
+
+GLVFResult glvfGetContextProcAddr(GLVFView view, int8_t* pName, GLVFVoidFunction* pResult)
+{
+	return ((View*)view)->getProcAddress(pName, pResult);
+}
+
+// Vulkan support
+
+GLVFResult glvfEnumerateRequiredInstanceExtensions(GLVFView view, uint32_t* pCount, int8_t** pExtensions)
+{
+	size_t i;
+	std::vector<std::string> vec = ((View*)view)->vulkanExtensions;
+	if (pExtensions == nullptr)
+	{
+		*pCount = vec.size();
+		return GLVF_OK;
+	}
+
+	for (i = 0; i < *pCount && i < vec.size(); i++)
+	{
+		pExtensions[i] = (int8_t*)&vec[i][0];
+	}
+
+	if (vec.size() > *pCount)
+	{
+		return GLVF_INCOMPLETE;
+	}
+
+	*pCount = i;
+	return GLVF_OK;
+}
+
+GLVFResult glvfGetPhysicalDevicePresentationSupport(GLVFView view,
+	GLVFVulkanHandle instance,
+	GLVFVulkanHandle physicalDevice,
+	uint32_t queueFamily,
+	GLVFBool* result)
+{
+	return ((View*)view)->getPhysicalDevicePresentationSupport(instance, physicalDevice, queueFamily, result);
+}
+
+GLVFResult glvfCreateSurface(GLVFView view,
+	GLVFVulkanHandle instance,
+	const GLVFVkAllocationCallbacks allocator,
+	uint32_t* vkResult,
+	GLVFVulkanHandle* output)
+{
+	return ((View*)view)->createSurface(instance, allocator, vkResult, output);
 }

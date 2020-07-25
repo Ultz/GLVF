@@ -7,4 +7,5 @@ GLVFResult glvfMakeContextCurrent(GLVFView view);
 GLVFResult glvfClearCurrentContext(GLVFInstance instance);
 GLVFResult glvfSwapBuffers(GLVFView view);
 GLVFResult glvfSwapInterval(GLVFView view, int32_t interval);
+GLVFResult glvfGetContextProcAddr(GLVFView view, int8_t* pName, GLVFVoidFunction* pResult);
 #endif

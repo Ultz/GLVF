@@ -5,8 +5,10 @@
 #include "EventPump.h"
 class View {
 public:
+	GLVFFeatureFlags enabledFeatures;
 	class Instance* instance;
 	class EventPump* eventPump;
+	std::vector<std::string> vulkanExtensions;
 	GLVFResult createEventPump(const GLVFEventPumpCreateInfo* info);
 	void destroyEventPump();
 	virtual void destroying();
@@ -29,5 +31,14 @@ public:
 	virtual GLVFResult makeCurrent() = 0;
 	virtual GLVFResult swapBuffers() = 0;
 	virtual GLVFResult swapInterval(int32_t interval) = 0;
+	virtual GLVFResult getPhysicalDevicePresentationSupport(GLVFVulkanHandle instance,
+		GLVFVulkanHandle physicalDevice,
+		uint32_t queueFamily,
+		GLVFBool* result) = 0;
+	virtual GLVFResult createSurface(GLVFVulkanHandle instance,
+		const GLVFVkAllocationCallbacks allocator,
+		uint32_t* vkResult,
+		GLVFVulkanHandle* output) = 0;
+	virtual GLVFResult getProcAddress(int8_t* name, GLVFVoidFunction* result) = 0;
 };
 #endif

@@ -13,5 +13,6 @@ public:
 	bool waitEvents;
 	int32_t getCount();
 	int32_t get(int32_t num, GLVFEvent* output);
+	void enqueue(GLVFEvent val);
 };
 #endif

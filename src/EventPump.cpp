@@ -16,3 +16,8 @@ int32_t EventPump::get(int32_t num, GLVFEvent* output)
 	events.erase(events.begin(), events.begin() + i);
 	return i;
 }
+
+void EventPump::enqueue(GLVFEvent val)
+{
+	events.push_back(val);
+}
