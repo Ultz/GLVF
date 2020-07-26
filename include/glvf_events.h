@@ -4,6 +4,7 @@
 
 #include "glvf_core.h"
 #include "glvf_view.h"
+#include "glvf_input_enums.h"
 #include <cstdint>
 
 typedef enum {
@@ -36,20 +37,91 @@ typedef enum {
 	GLVF_EVENT_KIND_GAMEPAD_BUTTON_UP,
 	GLVF_EVENT_KIND_GAMEPAD_THUMBSTICK_MOVE,
 	GLVF_EVENT_KIND_GAMEPAD_TRIGGER_MOVE,
+	GLVF_EVENT_KIND_DEVICE_CONNECTION_CHANGE,
 	GLVF_EVENT_KIND_FORCE_32_BIT = 2147483647
 } GLVFEventKind;
+
+typedef enum {
+	GLVF_INPUT_SUBJECT_VIEW,
+	GLVF_INPUT_SUBJECT_KEYBOARD,
+	GLVF_INPUT_SUBJECT_MOUSE,
+	GLVF_INPUT_SUBJECT_JOYSTICK,
+	GLVF_INPUT_SUBJECT_GAMEPAD,
+	GLVF_INPUT_SUBJECT_FORCE_32_BIT = 2147483647
+} GLVFEventSubject;
 
 typedef struct {
 	GLVFEventKind kind; // kind is the sType
 	uint32_t timestamp;
-	int8_t padding[56];
+	int8_t padding1[32];
+	intptr_t padding2[3];
 } GLVFEvent;
 
-// TODO GLVFKeyEvent
-// TODO GLVFCharEvent
-// TODO GLVFButtonEvent
-// TODO GLVFAxisEvent
-// TODO GLVFViewStateEvent
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	uint32_t numFiles;
+	int8_t padding1[28];
+	const int8_t** files;
+	intptr_t padding2[2];
+} GLVFFileDropEvent;
+
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	GLVFKey key;
+	GLVFBool pressed;
+	int8_t padding1[27];
+	intptr_t padding2[3];
+} GLVFKeyEvent;
+
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	int16_t receivedCharacter;
+	GLVFBool repeat;
+	int8_t padding1[29];
+	intptr_t padding2[3];
+} GLVFCharEvent;
+
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	uint32_t subject;
+	GLVFEventSubject subjectKind;
+	GLVFButtonName button;
+	int8_t padding1[20];
+	intptr_t padding2[3];
+} GLVFButtonEvent;
+
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	uint32_t subject;
+	GLVFEventSubject subjectKind;
+	GLVFBool isConnected;
+	int8_t padding1[23];
+	intptr_t padding2[3];
+} GLVFConnectionEvent;
+
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	uint32_t subject;
+	GLVFEventSubject subjectKind;
+	uint32_t axisIndex;
+	float_t xyState[2];
+	int8_t padding1[12];
+	intptr_t padding2[3];
+} GLVFAxisEvent;
+
+typedef struct {
+	GLVFEventKind kind;
+	uint32_t timestamp;
+	GLVFWindowState newState;
+	int8_t padding1[28];
+	intptr_t padding2[3];
+} GLVFWindowStateEvent;
 
 GLVF_DEFINE_HANDLE(GLVFEventPump);
 
