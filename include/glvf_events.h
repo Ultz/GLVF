@@ -3,8 +3,8 @@
 #define GLVF_EVENTS_H
 
 #include "glvf_core.h"
-#include "glvf_view.h"
 #include "glvf_input_enums.h"
+#include "glvf_view_extras.h"
 #include <cstdint>
 
 typedef enum {
@@ -109,9 +109,10 @@ typedef struct {
 	uint32_t timestamp;
 	uint32_t subject;
 	GLVFEventSubject subjectKind;
+	GLVFAxisKind axisKind;
 	uint32_t axisIndex;
-	float_t xyState[2];
-	int8_t padding1[12];
+	float xyState[2];
+	int8_t padding1[8];
 	intptr_t padding2[3];
 } GLVFAxisEvent;
 

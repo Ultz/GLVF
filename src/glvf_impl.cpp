@@ -312,3 +312,10 @@ GLVFResult glvfCreateSurface(GLVFView view,
 {
 	return ((View*)view)->createSurface(instance, allocator, vkResult, output);
 }
+
+// Input
+
+GLVFResult glvfEnumerateInputDevices(GLVFView view, uint32_t* pCount, GLVFInputDeviceInfo* pDevices)
+{
+	return ((View*)view)->getInputDevices(pCount, pDevices);
+}

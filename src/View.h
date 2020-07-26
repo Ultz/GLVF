@@ -40,5 +40,6 @@ public:
 		uint32_t* vkResult,
 		GLVFVulkanHandle* output) = 0;
 	virtual GLVFResult getProcAddress(int8_t* name, GLVFVoidFunction* result) = 0;
+	virtual GLVFResult getInputDevices(uint32_t* num, GLVFInputDeviceInfo* result) = 0;
 };
 #endif
