@@ -1,3 +1,5 @@
+#include <glvf_core.h>
+#ifdef GLVF_PLATFORM_GLFW
 #pragma once
 #ifndef _GLFWINSTANCE_H
 #define _GLFWINSTANCE_H
@@ -13,4 +15,5 @@ public:
 	virtual GLVFResult getViewForCurrentContext(View** output) override;
 	virtual GLVFResult clearCurrentContext() override;
 };
+#endif
 #endif

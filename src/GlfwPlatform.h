@@ -1,3 +1,5 @@
+#include <glvf_core.h>
+#ifdef GLVF_PLATFORM_GLFW
 #pragma once
 #ifndef _GLFWPLATFORM_H
 #define _GLFWPLATFORM_H
@@ -10,4 +12,5 @@ public:
 	GLVFResult createInstance(Instance** output) override;
 	virtual void destroyInstance(Instance* input) override;
 };
+#endif
 #endif

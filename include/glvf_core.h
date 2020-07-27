@@ -2,7 +2,9 @@
 #ifndef GLVF_CORE_H
 #define GLVF_CORE_H
 #define GLVF_DEFINE_HANDLE(object) typedef struct object##Handle* object;
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include <cstdint>
 
 // One of these will be defined:
@@ -53,4 +55,7 @@ const GLVFBool GLVF_FALSE = 0;
 GLVFResult glvfCreateInstance(GLVFInstance* output);
 GLVFBool glvfIsMultiInstanceSupported();
 void glvfDestroyInstance(GLVFInstance instance);
+#ifdef __cplusplus
+}
+#endif
 #endif

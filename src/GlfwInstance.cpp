@@ -1,5 +1,5 @@
-#include "GlfwInstance.h"
-#include "GlfwInstance.h"
+#include <glvf_core.h>
+#ifdef GLVF_PLATFORM_GLFW
 #include "GlfwInstance.h"
 #include <GLFW/glfw3.h>
 
@@ -47,3 +47,4 @@ GLVFResult GlfwInstance::clearCurrentContext()
 	glfwMakeContextCurrent(NULL);
 	return GLVF_OK;
 }
+#endif
