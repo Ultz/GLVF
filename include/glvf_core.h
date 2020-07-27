@@ -1,7 +1,6 @@
 #pragma once
 #ifndef GLVF_CORE_H
 #define GLVF_CORE_H
-#define GLVF_DEFINE_HANDLE(object) typedef struct object##Handle* object;
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,8 +41,8 @@ typedef enum {
 	GLVF_RESULT_FORCE_32_BIT = 2147483647
 } GLVFResult;
 
-GLVF_DEFINE_HANDLE(GLVFInstance);
-GLVF_DEFINE_HANDLE(GLVFView);
+typedef struct GLVFInstanceHandle* GLVFInstance;
+typedef struct GLVFViewHandle* GLVFView;
 
 typedef void (*GLVFMainFunction)(GLVFInstance instance, GLVFView view);
 typedef void (*GLVFVoidFunction)(void);

@@ -124,7 +124,7 @@ typedef struct {
 	intptr_t padding2[3];
 } GLVFWindowStateEvent;
 
-GLVF_DEFINE_HANDLE(GLVFEventPump);
+typedef struct GLVFEventPumpHandle* GLVFEventPump;
 
 GLVFResult glvfCreateEventPump(GLVFView view, const GLVFEventPumpCreateInfo* info, GLVFEventPump* result);
 GLVFResult glvfGetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name, void* value);

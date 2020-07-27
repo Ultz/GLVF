@@ -13,7 +13,7 @@ typedef struct {
 	const char* pFunctionName;
 } GLVFError;
 
-GLVF_DEFINE_HANDLE(GLVFErrorPump);
+typedef struct GLVFErrorPumpHandle* GLVFErrorPump;
 
 GLVFResult glvfCreateErrorPump(GLVFInstance instance, GLVFErrorPump* result);
 GLVFResult glvfEnumerateErrors(GLVFErrorPump pump, uint32_t* pCount, GLVFError* pErrors);
