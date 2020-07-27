@@ -28,7 +28,7 @@ extern "C" {
 #define GLVF_PLATFORM_GLFW // probably desktop
 #endif
 
-typedef enum {
+enum GLVFResult {
 	GLVF_OK, // Operation was successful
 	GLVF_INCOMPLETE, // Used by enumerate functions, indicates that the operation was successful but there are still more items to be enumerated.
 	GLVF_NEEDS_BOOSTRAP, // Used by CreateView, indicates that the operation was successful but GLVF needs control of the main function.
@@ -39,7 +39,7 @@ typedef enum {
 	GLVF_ERROR_BAD_PARAMETER,
 	GLVF_ERROR_FAILED_TO_BOOTSTRAP,
 	GLVF_RESULT_FORCE_32_BIT = 2147483647
-} GLVFResult;
+};
 
 typedef struct GLVFInstanceHandle* GLVFInstance;
 typedef struct GLVFViewHandle* GLVFView;

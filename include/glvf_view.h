@@ -4,16 +4,16 @@
 #include "glvf_core.h"
 #include "glvf_features.h"
 
-typedef enum {
+enum GLVFApiKind {
 	GLVF_API_KIND_NONE,
 	GLVF_API_KIND_OPENGL,
 	GLVF_API_KIND_OPENGLES,
 	GLVF_API_KIND_VULKAN,
 	GLVF_API_KIND_METAL,
 	GLVF_API_KIND_FORCE_32_BIT = 2147483647
-} GLVFApiKind;
+};
 
-typedef enum {
+enum GLVFViewPName {
 	GLVF_VIEW_PNAME_BOOL_VISIBILITY,
 	GLVF_VIEW_PNAME_VEC2I_POSITION,
 	GLVF_VIEW_PNAME_VEC2I_SIZE,
@@ -23,7 +23,7 @@ typedef enum {
 	GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE, // GLVFVideoMode
 	// GLVF_VIEW_PNAME_HANDLE_SCREEN,
 	GLVF_VIEW_PNAME_FORCE_32_BIT = 2147483647
-} GLVFViewPName;
+};
 
 struct GLVFRenderingApi {
 	// no sType as it flows out
@@ -31,13 +31,13 @@ struct GLVFRenderingApi {
 	int8_t version[2];
 };
 
-typedef enum {
+enum GLVFBufferKind {
 	GLVF_BUFFER_KIND_DEPTH,
 	GLVF_BUFFER_KIND_STENCIL,
 	GLVF_BUFFER_KIND_FORCE_32_BIT = 2147483647
-} GLVFBufferKind;
+};
 
-typedef enum {
+enum GLVFBits {
 	GLVF_DONT_CARE,
 	GLVF_NONE,
 	GLVF_COLOR_R8_G8_B8_A8,
@@ -46,17 +46,17 @@ typedef enum {
 	GLVF_DEPTH_R24,
 	GLVF_STENCIL_R8,
 	GLVF_BITS_FORCE_32_BIT = 2147483647
-} GLVFBits;
+};
 
 struct GLVFBufferBits {
 	GLVFBufferKind buffer;
 	GLVFBits preferredBits;
 };
 
-typedef enum {
+enum GLVFFeatureConfigKind {
 	GLVF_FEATURE_CONFIG_KIND_PROPERTY,
 	GLVF_FEATURE_CONFIG_KIND_FORCE_32_BIT = 2147483647
-} GLVFFeatureConfigKind;
+};
 
 struct GLVFPropertyFeatureConfig {
 	GLVFFeatureConfigKind kind;
@@ -77,34 +77,34 @@ struct GLVFViewCreateInfo {
 	const GLVFEmptyFeatureConfig** featureConfigs;
 };
 
-typedef enum {
+enum GLVFViewStatus {
 	GLVF_VIEW_STATE_ACTIVE,
 	GLVF_VIEW_STATE_PAUSED,
 	GLVF_VIEW_STATE_CLOSE_REQUESTED,
 	GLVF_VIEW_STATE_FORCE_32_BIT = 2147483647
-} GLVFViewStatus;
+};
 
 struct GLVFVideoMode {
 	int32_t refreshRate;
 	int32_t resolution[2];
 };
 
-typedef enum {
+enum GLVFUserInterface {
 	GLVF_USER_INTERFACE_NONE,
 	GLVF_USER_INTERFACE_MOBILE_NAVIGATION,
 	GLVF_USER_INTERFACE_MOBILE_STATUS_BAR,
 	GLVF_USER_INTERFACE_DESKTOP_RESIZABLE,
 	GLVF_USER_INTERFACE_DESKTOP_FIXED,
 	GLVF_USER_INTERFACE_FORCE_32_BIT = 2147483647
-} GLVFUserInterface;
+};
 
-typedef enum {
+enum GLVFWindowState {
 	GLVF_WINDOW_STATE_NORMAL,
 	GLVF_WINDOW_STATE_MINIMIZED,
 	GLVF_WINDOW_STATE_MAXIMIZED,
 	GLVF_WINDOW_STATE_FULLSCREEN,
 	GLVF_WINDOW_STATE_FORCE_32_BIT = 2147483647
-} GLVFWindowState;
+};
 
 GLVFResult glvfGetViewProperty(GLVFView view, GLVFViewPName name, void* value);
 GLVFResult glvfSetViewProperty(GLVFView view, GLVFViewPName name, void* value);

@@ -3,7 +3,7 @@
 #define GLVF_FEATURES_H
 #include "glvf_core.h"
 
-typedef enum {
+enum GLVFFeatureFlags {
 	GLVF_FEATURE_OPENGL_SUPPORT = 1, // Allows use of OpenGL in conjunction with GLVF.
 	GLVF_FEATURE_VULKAN_SUPPORT = 2, // Allows use of Vulkan in conjunction with GLVF.
 	GLVF_FEATURE_METAL_SUPPORT = 4, // Allows use of Metal in conjunction with GLVF.
@@ -22,7 +22,7 @@ typedef enum {
 	GLVF_FEATURE_EVENT_DRIVEN_PUMP = 32768,
 	GLVF_FEATURE_ENHANCED_DEBUGGING = 65536, // Allows the creation and usage of GLVF error pumps.
 	GLVF_FEATURE_FORCE_32_BIT = 2147483647,
-} GLVFFeatureFlags;
+};
 
 GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFlags* result);
 GLVFResult glvfQueryEnabledFeatures(GLVFView view, GLVFFeatureFlags* result);
