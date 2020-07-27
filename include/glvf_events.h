@@ -11,9 +11,9 @@ typedef enum {
 	GLVF_EVENT_PUMP_PNAME_BOOL_EVENT_DRIVEN
 } GLVFEventPumpPName;
 
-typedef struct {
+struct GLVFEventPumpCreateInfo {
 	GLVFBool isEventDriven;
-} GLVFEventPumpCreateInfo;
+};
 
 typedef enum {
 	GLVF_EVENT_KIND_EMPTY,
@@ -50,41 +50,41 @@ typedef enum {
 	GLVF_INPUT_SUBJECT_FORCE_32_BIT = 2147483647
 } GLVFEventSubject;
 
-typedef struct {
+struct GLVFEvent {
 	GLVFEventKind kind; // kind is the sType
 	uint32_t timestamp;
 	int8_t padding1[32];
 	intptr_t padding2[3];
-} GLVFEvent;
+};
 
-typedef struct {
+struct GLVFFileDropEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	uint32_t numFiles;
 	int8_t padding1[28];
 	const int8_t** files;
 	intptr_t padding2[2];
-} GLVFFileDropEvent;
+};
 
-typedef struct {
+struct GLVFKeyEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	GLVFKey key;
 	GLVFBool pressed;
 	int8_t padding1[27];
 	intptr_t padding2[3];
-} GLVFKeyEvent;
+};
 
-typedef struct {
+struct GLVFCharEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	int16_t receivedCharacter;
 	GLVFBool repeat;
 	int8_t padding1[29];
 	intptr_t padding2[3];
-} GLVFCharEvent;
+};
 
-typedef struct {
+struct GLVFButtonEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	uint32_t subject;
@@ -92,9 +92,9 @@ typedef struct {
 	GLVFButtonName button;
 	int8_t padding1[20];
 	intptr_t padding2[3];
-} GLVFButtonEvent;
+};
 
-typedef struct {
+struct GLVFConnectionEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	uint32_t subject;
@@ -102,9 +102,9 @@ typedef struct {
 	GLVFBool isConnected;
 	int8_t padding1[23];
 	intptr_t padding2[3];
-} GLVFConnectionEvent;
+};
 
-typedef struct {
+struct GLVFAxisEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	uint32_t subject;
@@ -114,15 +114,15 @@ typedef struct {
 	float xyState[2];
 	int8_t padding1[8];
 	intptr_t padding2[3];
-} GLVFAxisEvent;
+};
 
-typedef struct {
+struct GLVFWindowStateEvent {
 	GLVFEventKind kind;
 	uint32_t timestamp;
 	GLVFWindowState newState;
 	int8_t padding1[28];
 	intptr_t padding2[3];
-} GLVFWindowStateEvent;
+};
 
 typedef struct GLVFEventPumpHandle* GLVFEventPump;
 

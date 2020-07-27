@@ -6,12 +6,12 @@
 #include <cstdint>
 
 
-typedef struct {
+struct GLVFError {
 	// seeing as this is a struct that never flows in, it doesn't have an sType
 	GLVFResult errorCode;
 	const char* pErrorMessage;
 	const char* pFunctionName;
-} GLVFError;
+};
 
 typedef struct GLVFErrorPumpHandle* GLVFErrorPump;
 

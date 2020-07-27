@@ -25,11 +25,11 @@ typedef enum {
 	GLVF_VIEW_PNAME_FORCE_32_BIT = 2147483647
 } GLVFViewPName;
 
-typedef struct {
+struct GLVFRenderingApi {
 	// no sType as it flows out
 	GLVFApiKind kind;
 	int8_t version[2];
-} GLVFRenderingApi;
+};
 
 typedef enum {
 	GLVF_BUFFER_KIND_DEPTH,
@@ -48,34 +48,34 @@ typedef enum {
 	GLVF_BITS_FORCE_32_BIT = 2147483647
 } GLVFBits;
 
-typedef struct {
+struct GLVFBufferBits {
 	GLVFBufferKind buffer;
 	GLVFBits preferredBits;
-} GLVFBufferBits;
+};
 
 typedef enum {
 	GLVF_FEATURE_CONFIG_KIND_PROPERTY,
 	GLVF_FEATURE_CONFIG_KIND_FORCE_32_BIT = 2147483647
 } GLVFFeatureConfigKind;
 
-typedef struct {
+struct GLVFPropertyFeatureConfig {
 	GLVFFeatureConfigKind kind;
 	GLVFViewPName key;
 	void* value;
-} GLVFPropertyFeatureConfig;
+};
 
-typedef struct {
+struct GLVFEmptyFeatureConfig {
 	GLVFFeatureConfigKind kind;
-} GLVFEmptyFeatureConfig;
+};
 
-typedef struct {
+struct GLVFViewCreateInfo {
 	GLVFRenderingApi api;
 	int32_t numBufferBitPreferences;
 	const GLVFBufferBits* pBufferBitPreferences;
 	GLVFFeatureFlags enabledFeatures;
 	int32_t numFeatureConfigs;
 	const GLVFEmptyFeatureConfig** featureConfigs;
-} GLVFViewCreateInfo;
+};
 
 typedef enum {
 	GLVF_VIEW_STATE_ACTIVE,
@@ -84,10 +84,10 @@ typedef enum {
 	GLVF_VIEW_STATE_FORCE_32_BIT = 2147483647
 } GLVFViewStatus;
 
-typedef struct {
+struct GLVFVideoMode {
 	int32_t refreshRate;
 	int32_t resolution[2];
-} GLVFVideoMode;
+};
 
 typedef enum {
 	GLVF_USER_INTERFACE_NONE,

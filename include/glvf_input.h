@@ -3,7 +3,7 @@
 #define GLVF_INPUT_H
 #include "glvf_events.h"
 #include "glvf_input_enums.h"
-typedef struct {
+struct GLVFInputDeviceInfo {
 	GLVFEventSubject subjectKind;
 	uint32_t subject;
 	int8_t* name;
@@ -12,7 +12,7 @@ typedef struct {
 	uint32_t numTriggers;
 	uint32_t numScalarAxes;
 	uint32_t numButtons;
-} GLVFInputDeviceInfo;
+};
 
 GLVFResult glvfEnumerateInputDevices(GLVFView view, uint32_t* pCount, GLVFInputDeviceInfo* pDevices);
 #endif
