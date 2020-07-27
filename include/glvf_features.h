@@ -8,7 +8,7 @@ typedef enum {
 	GLVF_FEATURE_VULKAN_SUPPORT = 2, // Allows use of Vulkan in conjunction with GLVF.
 	GLVF_FEATURE_METAL_SUPPORT = 4, // Allows use of Metal in conjunction with GLVF.
 	GLVF_FEATURE_MULTIVIEW_SUPPORT = 8, // Allows the creation of multiple views, instead of just one (i.e. desktop windowing)
-	GLVF_FEATURE_RESERVED0 = 16, // GLVF_FEATURE_MULTISCREEN_SUPPORT = 16,
+	// GLVF_FEATURE_MULTISCREEN_SUPPORT = 16,
 	GLVF_FEATURE_CONTROLLABLE_SIZE = 32, // Allows the user to change the size of the view. This being disabled doesn't stop the OS from resizing the view.
 	GLVF_FEATURE_CONTROLLABLE_POSITION = 64,// Allows the user to change the position of the view. This being disabled doesn't stop the OS from moving it.
 	GLVF_FEATURE_CONTROLLABLE_STATE = 128, // Allows the user to control the view state. This being disabled doesn't stop the OS from changing it.
