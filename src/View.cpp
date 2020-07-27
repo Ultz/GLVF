@@ -21,4 +21,5 @@ void View::destroyEventPump()
 
 void View::destroying()
 {
+	destroyEventPump();
 }

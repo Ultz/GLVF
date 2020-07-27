@@ -9,6 +9,5 @@
 #include "glvf_input_enums.h"
 #include "glvf_opengl.h"
 #include "glvf_view.h"
-#include "glvf_view_extras.h"
 #include "glvf_vulkan.h"
 #endif

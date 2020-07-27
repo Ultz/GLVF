@@ -4,7 +4,7 @@
 
 #include "glvf_core.h"
 #include "glvf_input_enums.h"
-#include "glvf_view_extras.h"
+#include "glvf_view.h"
 #include <cstdint>
 
 typedef enum {

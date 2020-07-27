@@ -13,6 +13,18 @@ typedef enum {
 	GLVF_API_KIND_FORCE_32_BIT = 2147483647
 } GLVFApiKind;
 
+typedef enum {
+	GLVF_VIEW_PNAME_BOOL_VISIBILITY,
+	GLVF_VIEW_PNAME_VEC2I_POSITION,
+	GLVF_VIEW_PNAME_VEC2I_SIZE,
+	GLVF_VIEW_PNAME_STRING_TITLE,
+	GLVF_VIEW_PNAME_ENUM_UI, // GLVFUserInterface
+	GLVF_VIEW_PNAME_ENUM_WINDOW_STATE, // GLVFWindowState
+	GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE, // GLVFVideoMode
+	// GLVF_VIEW_PNAME_HANDLE_SCREEN,
+	GLVF_VIEW_PNAME_FORCE_32_BIT = 2147483647
+} GLVFViewPName;
+
 typedef struct {
 	// no sType as it flows out
 	GLVFApiKind kind;
@@ -42,6 +54,7 @@ typedef struct {
 } GLVFBufferBits;
 
 typedef enum {
+	GLVF_FEATURE_CONFIG_KIND_PROPERTY,
 	GLVF_FEATURE_CONFIG_KIND_FORCE_32_BIT = 2147483647
 } GLVFFeatureConfigKind;
 
@@ -65,9 +78,32 @@ typedef enum {
 	GLVF_VIEW_STATE_FORCE_32_BIT = 2147483647
 } GLVFViewStatus;
 
+typedef struct {
+	int32_t refreshRate;
+	int32_t resolution[2];
+} GLVFVideoMode;
+
+typedef enum {
+	GLVF_USER_INTERFACE_NONE,
+	GLVF_USER_INTERFACE_MOBILE_NAVIGATION,
+	GLVF_USER_INTERFACE_MOBILE_STATUS_BAR,
+	GLVF_USER_INTERFACE_DESKTOP_RESIZABLE,
+	GLVF_USER_INTERFACE_DESKTOP_FIXED,
+	GLVF_USER_INTERFACE_FORCE_32_BIT = 2147483647
+} GLVFUserInterface;
+
+typedef enum {
+	GLVF_WINDOW_STATE_NORMAL,
+	GLVF_WINDOW_STATE_MINIMIZED,
+	GLVF_WINDOW_STATE_MAXIMIZED,
+	GLVF_WINDOW_STATE_FULLSCREEN,
+	GLVF_WINDOW_STATE_FORCE_32_BIT = 2147483647
+} GLVFWindowState;
+
+GLVFResult glvfGetViewProperty(GLVFView view, GLVFViewPName name, void* value);
+GLVFResult glvfSetViewProperty(GLVFView view, GLVFViewPName name, void* value);
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result);
 GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state);
 GLVFResult glvfBootstrapView(GLVFView view, GLVFMainFunction fn);
 void glvfDestroyView(GLVFView view);
-
 #endif
