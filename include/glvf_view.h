@@ -60,6 +60,12 @@ typedef enum {
 
 typedef struct {
 	GLVFFeatureConfigKind kind;
+	GLVFViewPName key;
+	void* value;
+} GLVFPropertyFeatureConfig;
+
+typedef struct {
+	GLVFFeatureConfigKind kind;
 } GLVFEmptyFeatureConfig;
 
 typedef struct {
