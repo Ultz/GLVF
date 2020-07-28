@@ -1,11 +1,13 @@
 #include "ErrorPump.h"
 
-void ErrorPump::reportError(GLVFResult result, std::string function, std::string message)
+void ErrorPump::reportError(GLVFResult result, std::string message)
 {
 	GLVFError err;
 	err.errorCode = result;
-	err.pFunctionName = &function[0];
-	err.pErrorMessage = &message[0];
+	for (size_t i = 0; i < 1024 && i < message.size(); i++)
+	{
+		err.pErrorMessage[i] = message[i];
+	}
 	errors.push_back(err);
 }
 

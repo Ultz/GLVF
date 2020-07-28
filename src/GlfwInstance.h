@@ -5,10 +5,15 @@
 #define _GLFWINSTANCE_H
 #include "Instance.h"
 
+Instance* instance;
+GLVFResult mapGlfwErrorCode(int errorCode);
+
 class GlfwInstance : public Instance
 {
 public:
 	GlfwInstance();
+	GLVFResult createErrorPump() override;
+	void destroyErrorPump() override;
 	GLVFResult createView(const GLVFViewCreateInfo* input, class View** output) override;
 	void destroyView(class View* view) override;
 	void destroying();

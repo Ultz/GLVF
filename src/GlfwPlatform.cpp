@@ -4,8 +4,6 @@
 #include "GlfwInstance.h"
 #include <GLFW/glfw3.h>
 
-Instance* instance;
-
 bool GlfwPlatform::allowMultiInstance()
 {
     return false;
@@ -38,6 +36,5 @@ void GlfwPlatform::destroyInstance(Instance* input)
 
     ((GlfwInstance*)input)->destroying();
     delete input;
-    glfwTerminate();
 }
 #endif

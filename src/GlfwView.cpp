@@ -1,14 +1,40 @@
 #include <glvf_core.h>
 #ifdef GLVF_PLATFORM_GLFW
 #include <GLFW/glfw3.h>
+#include <map>
 #include "GlfwView.h"
+GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
+{
+	for (size_t i = 0; i < info->numFeatureConfigs; i++)
+	{
+		switch (info->featureConfigs[i]->kind)
+		{
+		case GLVF_FEATURE_CONFIG_KIND_PROPERTY:
+			const GLVFPropertyFeatureConfig* config = (const GLVFPropertyFeatureConfig*)info->featureConfigs[i];
+			switch (config->key)
+			{
+
+			}
+		default:
+			if (instance->errorPump)
+			{
+				instance->errorPump->reportError
+				(
+					GLVF_ERROR_BAD_PARAMETER,
+					"Contained an unsupported feature config. GLFW only supports GLVF_FEATURE_CONFIG_KIND_PROPERTY"
+				);
+			}
+			return GLVF_ERROR_BAD_PARAMETER;
+		}
+	}
+}
 void GlfwView::destroying()
 {
 	View::destroying();
 }
 GLVFViewStatus GlfwView::getState()
 {
-	return GLVFViewStatus();
+	return glfwWindowShouldClose(window) ? GLVF_VIEW_STATE_CLOSE_REQUESTED : GLVF_VIEW_STATE_ACTIVE;
 }
 GLVFResult GlfwView::bootstrap(GLVFMainFunction fn)
 {

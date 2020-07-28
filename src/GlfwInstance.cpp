@@ -2,6 +2,7 @@
 #ifdef GLVF_PLATFORM_GLFW
 #include "GlfwInstance.h"
 #include <GLFW/glfw3.h>
+#include "GlfwView.h"
 
 GlfwInstance::GlfwInstance()
 {
@@ -23,17 +24,75 @@ GlfwInstance::GlfwInstance()
 	    (glfwVulkanSupported() ? GLVF_FEATURE_VULKAN_SUPPORT : 0));
 }
 
+GLVFResult GlfwInstance::createErrorPump()
+{
+	Instance::createErrorPump();
+	glfwSetErrorCallback(&errorCallback);
+}
+
+void GlfwInstance::destroyErrorPump()
+{
+	Instance::destroyErrorPump();
+	glfwSetErrorCallback(NULL);
+}
+
+void errorCallback(int error_code, const char* description)
+{
+	if (instance->errorPump)
+	{
+		instance->errorPump->reportError(mapGlfwErrorCode(error_code), std::to_string(error_code) + ": " + std::string(description));
+	}
+}
+
+GLVFResult mapGlfwErrorCode(int errorCode)
+{
+	switch (errorCode)
+	{
+	case GLFW_NO_ERROR:
+		return GLVF_OK;
+	case GLFW_NOT_INITIALIZED:
+		return GLVF_ERROR_INSTANCE_INVALID;
+	case GLFW_NO_CURRENT_CONTEXT:
+		return GLVF_ERROR_NO_CURRENT_CONTEXT;
+	case GLFW_INVALID_ENUM:
+	case GLFW_INVALID_VALUE:
+		return GLVF_ERROR_BAD_PARAMETER;
+	case GLFW_API_UNAVAILABLE:
+	case GLFW_NO_WINDOW_CONTEXT:
+		return GLVF_ERROR_FEATURE_NOT_AVAILABLE;
+	case GLFW_VERSION_UNAVAILABLE:
+		return GLVF_ERROR_VERSION_NOT_SUPPORTED;
+	case GLFW_FORMAT_UNAVAILABLE:
+		return GLVF_ERROR_UNSUPPORTED_FORMAT;
+	case GLFW_PLATFORM_ERROR:
+	default:
+		return GLVF_ERROR_UNDERLYING_API_ERROR;
+	}
+}
+
 GLVFResult GlfwInstance::createView(const GLVFViewCreateInfo* input, View** output)
 {
-	return GLVF_OK;
+	GlfwView* view = new GlfwView();
+	GLVFResult ret = view->initialize(input);
+	if (ret != GLVF_OK)
+	{
+		delete view;
+		return ret;
+	}
+
+	*output = view;
+	return ret;
 }
 
 void GlfwInstance::destroyView(View* view)
 {
+	view->destroying();
+	delete view;
 }
 
 void GlfwInstance::destroying()
 {
+	glfwTerminate();
 }
 
 GLVFResult GlfwInstance::getViewForCurrentContext(View** output)

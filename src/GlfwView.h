@@ -6,6 +6,10 @@
 #include <glvf.h>
 #include "View.h"
 class GlfwView : public View {
+private:
+	GLFWwindow* window;
+public:
+	GLVFResult initialize(const GLVFViewCreateInfo* info);
 	void destroying() override;
 	GLVFViewStatus getState() override;
 	GLVFResult bootstrap(GLVFMainFunction fn) override;
