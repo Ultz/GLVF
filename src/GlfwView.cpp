@@ -5,6 +5,10 @@
 #include "GlfwView.h"
 GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
 {
+	int width;
+	int height;
+	char* title;
+	bool uiSpecified;
 	for (size_t i = 0; i < info->numFeatureConfigs; i++)
 	{
 		switch (info->featureConfigs[i]->kind)
@@ -13,7 +17,84 @@ GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
 			const GLVFPropertyFeatureConfig* config = (const GLVFPropertyFeatureConfig*)info->featureConfigs[i];
 			switch (config->key)
 			{
-
+				case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
+					glfwWindowHint(GLFW_VISIBLE, *(GLVFBool*)config->value);
+					break;
+				case GLVF_VIEW_PNAME_VEC2I_POSITION:
+					break;
+				case GLVF_VIEW_PNAME_VEC2I_SIZE:
+					width = ((int32_t*)config->value)[0];
+					height = ((int32_t*)config->value)[1];
+					break;
+				case GLVF_VIEW_PNAME_STRING_TITLE:
+					title = (char*)config->value;
+					break;
+				case GLVF_VIEW_PNAME_ENUM_UI:
+					switch (*(GLVFUserInterface*)config->value)
+					{
+						case GLVF_USER_INTERFACE_NONE:
+							glfwWindowHint(GLFW_DECORATED, 0);
+							glfwWindowHint(GLFW_RESIZABLE, 0);
+							break;
+						case GLVF_USER_INTERFACE_DESKTOP_RESIZABLE:
+							glfwWindowHint(GLFW_DECORATED, 1);
+							glfwWindowHint(GLFW_RESIZABLE, 1);
+							break;
+						case GLVF_USER_INTERFACE_DESKTOP_FIXED:
+							glfwWindowHint(GLFW_DECORATED, 1);
+							glfwWindowHint(GLFW_RESIZABLE, 0);
+							break;
+						case GLVF_USER_INTERFACE_MOBILE_NAVIGATION:
+							if (instance->errorPump)
+							{
+								instance->errorPump->reportError
+								(
+									GLVF_WARN_BAD_PARAMETER,
+									"GLVF_USER_INTERFACE_MOBILE_NAVIGATION is not supported with GLFW. Assumed GLVF_USER_INTERFACE_DESKTOP_RESIZABLE."
+								);
+							}
+							glfwWindowHint(GLFW_DECORATED, 1);
+							glfwWindowHint(GLFW_RESIZABLE, 1);
+							break;
+						case GLVF_USER_INTERFACE_MOBILE_STATUS_BAR:
+							if (instance->errorPump)
+							{
+								instance->errorPump->reportError
+								(
+									GLVF_WARN_BAD_PARAMETER,
+									"GLVF_USER_INTERFACE_MOBILE_STATUS_BAR is not supported with GLFW. Assumed GLVF_USER_INTERFACE_DESKTOP_FIXED."
+								);
+							}
+							glfwWindowHint(GLFW_DECORATED, 1);
+							glfwWindowHint(GLFW_RESIZABLE, 0);
+							break;
+						default:
+							if (instance->errorPump)
+							{
+								instance->errorPump->reportError
+								(
+									GLVF_ERROR_BAD_PARAMETER,
+									"Unknown user interface option."
+								);
+							}
+							return GLVF_ERROR_BAD_PARAMETER;
+					}
+					uiSpecified = true;
+					break;
+				case GLVF_VIEW_PNAME_ENUM_WINDOW_STATE:
+					break;
+				case GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE:
+					break;
+				default:
+					if (instance->errorPump)
+					{
+						instance->errorPump->reportError
+						(
+							GLVF_ERROR_BAD_PARAMETER,
+							"Unknown key for GLVFPropertyFeatureConfig"
+						);
+					}
+					return GLVF_ERROR_BAD_PARAMETER;
 			}
 		default:
 			if (instance->errorPump)
