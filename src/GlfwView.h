@@ -8,11 +8,13 @@
 class GlfwView : public View {
 private:
 	GLFWwindow* window;
+    int8_t* cachedTitle;
+    bool fullscreen;
 public:
 	GLVFResult initialize(const GLVFViewCreateInfo* info);
 	void destroying() override;
 	GLVFViewStatus getState() override;
-	GLVFResult bootstrap(GLVFMainFunction fn) override;
+	GLVFResult bootstrap(GLVFMainLoopFunction fn) override;
 	GLVFResult getVisibility(GLVFBool* result) override;
 	GLVFResult getPosition(int32_t* result) override;
 	GLVFResult getSize(int32_t* result) override;
@@ -35,7 +37,7 @@ public:
 		uint32_t queueFamily,
 		GLVFBool* result) override;
 	GLVFResult createSurface(GLVFVulkanHandle instance,
-		const GLVFVkAllocationCallbacks allocator,
+		const GLVFVkAllocationCallbacks* allocator,
 		uint32_t* vkResult,
 		GLVFVulkanHandle* output) override;
 	GLVFResult getProcAddress(int8_t* name, GLVFVoidFunction* result) override;

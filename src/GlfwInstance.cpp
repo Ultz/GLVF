@@ -1,7 +1,7 @@
 #include <glvf_core.h>
 #ifdef GLVF_PLATFORM_GLFW
 #include "GlfwInstance.h"
-#include <GLFW/glfw3.h>
+#include "Glfw.h"
 #include "GlfwView.h"
 
 GlfwInstance::GlfwInstance()

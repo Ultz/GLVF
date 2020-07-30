@@ -13,7 +13,7 @@ public:
 	void destroyEventPump();
 	virtual void destroying();
 	virtual GLVFViewStatus getState() = 0;
-	virtual GLVFResult bootstrap(GLVFMainFunction fn) = 0;
+	virtual GLVFResult bootstrap(GLVFMainLoopFunction fn) = 0;
 	virtual GLVFResult getVisibility(GLVFBool* result) = 0;
 	virtual GLVFResult getPosition(int32_t* result) = 0;
 	virtual GLVFResult getSize(int32_t* result) = 0;
@@ -36,7 +36,7 @@ public:
 		uint32_t queueFamily,
 		GLVFBool* result) = 0;
 	virtual GLVFResult createSurface(GLVFVulkanHandle instance,
-		const GLVFVkAllocationCallbacks allocator,
+		const GLVFVkAllocationCallbacks* allocator,
 		uint32_t* vkResult,
 		GLVFVulkanHandle* output) = 0;
 	virtual GLVFResult getProcAddress(int8_t* name, GLVFVoidFunction* result) = 0;

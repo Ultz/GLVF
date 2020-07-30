@@ -43,14 +43,15 @@ enum GLVFResult {
 	GLVF_ERROR_VERSION_NOT_SUPPORTED,
 	GLVF_ERROR_UNDERLYING_API_ERROR,
 	GLVF_ERROR_UNSUPPORTED_FORMAT,
+    GLVF_ERROR_UNKNOWN,
 	GLVF_WARN_BAD_PARAMETER, // Only delivered via an error pump. If a bad parameter was supplied but the method made a fixup.
+    GLVF_WARN_NOT_IMPLEMENTED,
 	GLVF_RESULT_FORCE_32_BIT = 2147483647
 };
 
 typedef struct GLVFInstanceHandle* GLVFInstance;
 typedef struct GLVFViewHandle* GLVFView;
 
-typedef void (*GLVFMainFunction)(GLVFInstance instance, GLVFView view);
 typedef void (*GLVFVoidFunction)(void);
 typedef int8_t GLVFBool;
 

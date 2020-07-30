@@ -306,7 +306,7 @@ GLVFResult glvfGetPhysicalDevicePresentationSupport(GLVFView view,
 
 GLVFResult glvfCreateSurface(GLVFView view,
 	GLVFVulkanHandle instance,
-	const GLVFVkAllocationCallbacks allocator,
+	const GLVFVkAllocationCallbacks* allocator,
 	uint32_t* vkResult,
 	GLVFVulkanHandle* output)
 {

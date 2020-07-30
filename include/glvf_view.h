@@ -32,19 +32,20 @@ struct GLVFRenderingApi {
 };
 
 enum GLVFBufferKind {
+    GLVF_BUFFER_KIND_COLOR,
 	GLVF_BUFFER_KIND_DEPTH,
 	GLVF_BUFFER_KIND_STENCIL,
 	GLVF_BUFFER_KIND_FORCE_32_BIT = 2147483647
 };
 
 enum GLVFBits {
-	GLVF_DONT_CARE,
-	GLVF_NONE,
-	GLVF_COLOR_R8_G8_B8_A8,
-	GLVF_COLOR_R5_G6_B5,
-	GLVF_DEPTH_R16,
-	GLVF_DEPTH_R24,
-	GLVF_STENCIL_R8,
+	GLVF_BITS_DONT_CARE,
+	GLVF_BITS_NONE,
+	GLVF_BITS_COLOR_R8_G8_B8_A8,
+	GLVF_BITS_COLOR_R5_G6_B5,
+	GLVF_BITS_DEPTH_R16,
+	GLVF_BITS_DEPTH_R24,
+	GLVF_BITS_STENCIL_R8,
 	GLVF_BITS_FORCE_32_BIT = 2147483647
 };
 
@@ -106,10 +107,12 @@ enum GLVFWindowState {
 	GLVF_WINDOW_STATE_FORCE_32_BIT = 2147483647
 };
 
+typedef void (*GLVFMainLoopFunction)(double deltaTime);
+
 GLVFResult glvfGetViewProperty(GLVFView view, GLVFViewPName name, void* value);
 GLVFResult glvfSetViewProperty(GLVFView view, GLVFViewPName name, void* value);
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result);
 GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state);
-GLVFResult glvfBootstrapView(GLVFView view, GLVFMainFunction fn);
+GLVFResult glvfBootstrapView(GLVFView view, GLVFMainLoopFunction fn);
 void glvfDestroyView(GLVFView view);
 #endif

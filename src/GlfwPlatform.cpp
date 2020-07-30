@@ -2,7 +2,7 @@
 #ifdef GLVF_PLATFORM_GLFW
 #include "GlfwPlatform.h"
 #include "GlfwInstance.h"
-#include <GLFW/glfw3.h>
+#include "Glfw.h"
 
 bool GlfwPlatform::allowMultiInstance()
 {
