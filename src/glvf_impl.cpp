@@ -56,17 +56,17 @@ void glvfDestroyInstance(GLVFInstance instance)
 		return;
 	}
 
-	currentPlatform->destroyInstance((Instance*)instance);
+	currentPlatform->destroyInstance(reinterpret_cast<Instance*>(instance));
 }
 
 // Debugging
 
 GLVFResult glvfCreateErrorPump(GLVFInstance instance, GLVFErrorPump* result)
 {
-	GLVFResult ret = ((Instance*)instance)->createErrorPump();
+	GLVFResult ret = reinterpret_cast<Instance*>(instance)->createErrorPump();
 	if (ret == GLVF_OK)
 	{
-		*result = (GLVFErrorPump)((Instance*)instance)->errorPump;
+		*result = (GLVFErrorPump)reinterpret_cast<Instance*>(instance)->errorPump;
 	}
 
 	return ret;
@@ -162,13 +162,13 @@ void glvfDestroyEventPump(GLVFEventPump pump)
 
 GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFlags* result)
 {
-	*result = ((Instance*)instance)->supportedFeatures;
+	*result = reinterpret_cast<Instance*>(instance)->supportedFeatures;
 	return GLVF_OK;
 }
 
 GLVFResult glvfQueryEnabledFeatures(GLVFView view, GLVFFeatureFlags* result)
 {
-	*result = ((View*)view)->enabledFeatures;
+	*result = reinterpret_cast<View*>(view)->enabledFeatures;
 	return GLVF_OK;
 }
 
@@ -176,44 +176,47 @@ GLVFResult glvfQueryEnabledFeatures(GLVFView view, GLVFFeatureFlags* result)
 
 GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info, GLVFView* result)
 {
-	return ((Instance*)instance)->createView(info, (View**)result);
+	return reinterpret_cast<Instance*>(instance)->createView(info, (View**)result);
 }
 
 GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state)
 {
-	*state = ((View*)view)->getState();
+	*state = reinterpret_cast<View*>(view)->getState();
 	return GLVF_OK;
 }
 
 GLVFResult glvfBootstrapView(GLVFView view, GLVFMainLoopFunction fn)
 {
-	return ((View*)view)->bootstrap(fn);
+	return reinterpret_cast<View*>(view)->bootstrap(fn);
 }
 
 void glvfDestroyView(GLVFView view)
 {
-	((View*)view)->instance->destroyView((View*)view);
+	reinterpret_cast<View*>(view)->instance->destroyView(reinterpret_cast<View*>(view));
 }
 
 // View Extras
 GLVFResult glvfGetViewProperty(GLVFView view, GLVFViewPName name, void* value)
 {
+    View* aview = reinterpret_cast<View*>(view);
 	switch (name)
 	{
 	case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
-		return ((View*)view)->getVisibility((GLVFBool*)value);
+		return aview->getVisibility(reinterpret_cast<GLVFBool*>(value));
 	case GLVF_VIEW_PNAME_VEC2I_POSITION:
-		return ((View*)view)->getPosition((int32_t*)value);
+		return aview->getPosition(reinterpret_cast<int32_t*>(value));
 	case GLVF_VIEW_PNAME_VEC2I_SIZE:
-		return ((View*)view)->getSize((int32_t*)value);
+		return aview->getSize(reinterpret_cast<int32_t*>(value));
 	case GLVF_VIEW_PNAME_STRING_TITLE:
-		return ((View*)view)->getTitle((int8_t**)value);
+		return aview->getTitle(reinterpret_cast<int8_t**>(value));
 	case GLVF_VIEW_PNAME_ENUM_UI:
-		return ((View*)view)->getUI((GLVFUserInterface*)value);
+		return aview->getUI(reinterpret_cast<GLVFUserInterface*>(value));
 	case GLVF_VIEW_PNAME_ENUM_WINDOW_STATE:
-		return ((View*)view)->getWindowState((GLVFWindowState*)value);
+		return aview->getWindowState(reinterpret_cast<GLVFWindowState*>(value));
 	case GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE:
-		return ((View*)view)->getVideoMode((GLVFVideoMode*)value);
+		return aview->getVideoMode(reinterpret_cast<GLVFVideoMode*>(value));
+    case GLVF_VIEW_PNAME_VEC2I_FRAMEBUFFER_SIZE:
+        return aview->getFramebufferSize(reinterpret_cast<int32_t*>(value));
 	default:
 		return GLVF_ERROR_BAD_PARAMETER;
 	}
@@ -221,57 +224,60 @@ GLVFResult glvfGetViewProperty(GLVFView view, GLVFViewPName name, void* value)
 
 GLVFResult glvfSetViewProperty(GLVFView view, GLVFViewPName name, void* value)
 {
-	switch (name)
-	{
-	case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
-		return ((View*)view)->setVisibility((GLVFBool*)value);
-	case GLVF_VIEW_PNAME_VEC2I_POSITION:
-		return ((View*)view)->setPosition((int32_t*)value);
-	case GLVF_VIEW_PNAME_VEC2I_SIZE:
-		return ((View*)view)->setSize((int32_t*)value);
-	case GLVF_VIEW_PNAME_STRING_TITLE:
-		return ((View*)view)->setTitle((int8_t**)value);
-	case GLVF_VIEW_PNAME_ENUM_UI:
-		return ((View*)view)->setUI((GLVFUserInterface*)value);
-	case GLVF_VIEW_PNAME_ENUM_WINDOW_STATE:
-		return ((View*)view)->setWindowState((GLVFWindowState*)value);
-	case GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE:
-		return ((View*)view)->setVideoMode((GLVFVideoMode*)value);
-	default:
-		return GLVF_ERROR_BAD_PARAMETER;
-	}
+    View* aview = reinterpret_cast<View*>(view);
+    switch (name)
+    {
+    case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
+        return aview->setVisibility(reinterpret_cast<GLVFBool*>(value));
+    case GLVF_VIEW_PNAME_VEC2I_POSITION:
+        return aview->setPosition(reinterpret_cast<int32_t*>(value));
+    case GLVF_VIEW_PNAME_VEC2I_SIZE:
+        return aview->setSize(reinterpret_cast<int32_t*>(value));
+    case GLVF_VIEW_PNAME_STRING_TITLE:
+        return aview->setTitle(reinterpret_cast<int8_t**>(value));
+    case GLVF_VIEW_PNAME_ENUM_UI:
+        return aview->setUI(reinterpret_cast<GLVFUserInterface*>(value));
+    case GLVF_VIEW_PNAME_ENUM_WINDOW_STATE:
+        return aview->setWindowState(reinterpret_cast<GLVFWindowState*>(value));
+    case GLVF_VIEW_PNAME_STRUCT_VIDEO_MODE:
+        return aview->setVideoMode(reinterpret_cast<GLVFVideoMode*>(value));
+    case GLVF_VIEW_PNAME_VEC2I_FRAMEBUFFER_SIZE:
+        return GLVF_ERROR_READ_ONLY;
+    default:
+        return GLVF_ERROR_BAD_PARAMETER;
+    }
 }
 
 // OpenGL support
 
 GLVFResult glvfQueryCurrentContext(GLVFInstance instance, GLVFView* result)
 {
-	return ((Instance*)instance)->getViewForCurrentContext((View**)result);
+	return reinterpret_cast<Instance*>(instance)->getViewForCurrentContext((View**)result);
 }
 
 GLVFResult glvfMakeContextCurrent(GLVFView view)
 {
-	return ((View*)view)->makeCurrent();
+	return reinterpret_cast<View*>(view)->makeCurrent();
 }
 
 GLVFResult glvfClearCurrentContext(GLVFInstance instance)
 {
-	return ((Instance*)instance)->clearCurrentContext();
+	return reinterpret_cast<Instance*>(instance)->clearCurrentContext();
 }
 
 GLVFResult glvfSwapBuffers(GLVFView view)
 {
-	return ((View*)view)->swapBuffers();
+	return reinterpret_cast<View*>(view)->swapBuffers();
 }
 
 GLVFResult glvfSwapInterval(GLVFView view, int32_t interval)
 {
-	return ((View*)view)->swapInterval(interval);
+	return reinterpret_cast<View*>(view)->swapInterval(interval);
 }
 
 GLVFResult glvfGetContextProcAddr(GLVFView view, int8_t* pName, GLVFVoidFunction* pResult)
 {
-	return ((View*)view)->getProcAddress(pName, pResult);
+	return reinterpret_cast<View*>(view)->getProcAddress(pName, pResult);
 }
 
 // Vulkan support
@@ -279,7 +285,7 @@ GLVFResult glvfGetContextProcAddr(GLVFView view, int8_t* pName, GLVFVoidFunction
 GLVFResult glvfEnumerateRequiredInstanceExtensions(GLVFView view, uint32_t* pCount, int8_t** pExtensions)
 {
 	size_t i;
-	std::vector<std::string> vec = ((View*)view)->vulkanExtensions;
+	std::vector<std::string> vec = reinterpret_cast<View*>(view)->vulkanExtensions;
 	if (pExtensions == nullptr)
 	{
 		*pCount = vec.size();
@@ -306,7 +312,7 @@ GLVFResult glvfGetPhysicalDevicePresentationSupport(GLVFView view,
 	uint32_t queueFamily,
 	GLVFBool* result)
 {
-	return ((View*)view)->getPhysicalDevicePresentationSupport(instance, physicalDevice, queueFamily, result);
+	return reinterpret_cast<View*>(view)->getPhysicalDevicePresentationSupport(instance, physicalDevice, queueFamily, result);
 }
 
 GLVFResult glvfCreateSurface(GLVFView view,
@@ -315,12 +321,12 @@ GLVFResult glvfCreateSurface(GLVFView view,
 	uint32_t* vkResult,
 	GLVFVulkanHandle* output)
 {
-	return ((View*)view)->createSurface(instance, allocator, vkResult, output);
+	return reinterpret_cast<View*>(view)->createSurface(instance, allocator, vkResult, output);
 }
 
 // Input
 
 GLVFResult glvfEnumerateInputDevices(GLVFView view, uint32_t* pCount, GLVFInputDeviceInfo* pDevices)
 {
-	return ((View*)view)->getInputDevices(pCount, pDevices);
+	return reinterpret_cast<View*>(view)->getInputDevices(pCount, pDevices);
 }
