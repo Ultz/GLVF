@@ -2,6 +2,7 @@
 #ifdef GLVF_PLATFORM_GLFW
 #include "Glfw.h"
 #include <map>
+#include <ctime>
 #include "GlfwView.h"
 #include "GlfwInstance.h"
 GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
@@ -124,10 +125,10 @@ GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
 
     for (size_t i = 0; i < info->numFeatureConfigs; i++)
     {
+        const GLVFPropertyFeatureConfig* config = (const GLVFPropertyFeatureConfig*)info->featureConfigs[i];
         switch (info->featureConfigs[i]->kind)
         {
         case GLVF_FEATURE_CONFIG_KIND_PROPERTY:
-            const GLVFPropertyFeatureConfig* config = (const GLVFPropertyFeatureConfig*)info->featureConfigs[i];
             switch (config->key)
             {
             case GLVF_VIEW_PNAME_BOOL_VISIBILITY:
@@ -273,6 +274,12 @@ GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
         }
     }
 
+    for (size_t i = 0; i < joysticks.size(); i++)
+    {
+        joysticks[i] = GlfwJoystick(i);
+    }
+
+    glfwSetWindowUserPointer(window, this);
     cachedTitle = reinterpret_cast<int8_t*>(title);
     return GLVF_OK;
 }
@@ -311,6 +318,11 @@ GLVFResult GlfwView::getPosition(int32_t* result)
 GLVFResult GlfwView::getSize(int32_t* result)
 {
     glfwGetWindowSize(window, result, &result[1]);
+    return GLVF_OK;
+}
+GLVFResult GlfwView::getFramebufferSize(int32_t* result)
+{
+    glfwGetFramebufferSize(window, result, &result[1]);
     return GLVF_OK;
 }
 GLVFResult GlfwView::getTitle(int8_t** result)
@@ -533,6 +545,8 @@ GLVFResult GlfwView::setWindowState(GLVFWindowState* value)
         fullscreen = false;
     }
 
+    GLFWmonitor* monitor;
+    const GLFWvidmode* mode;
     switch (*value)
     {
     case GLVF_WINDOW_STATE_NORMAL:
@@ -545,7 +559,7 @@ GLVFResult GlfwView::setWindowState(GLVFWindowState* value)
         glfwMaximizeWindow(window);
         break;
     case GLVF_WINDOW_STATE_FULLSCREEN:
-        GLFWmonitor* monitor = glfwGetWindowMonitor(window);
+        monitor = glfwGetWindowMonitor(window);
         if (!monitor)
         {
             monitor = getMonitorOfWindowedWindow(window);
@@ -555,7 +569,7 @@ GLVFResult GlfwView::setWindowState(GLVFWindowState* value)
             }
         }
 
-        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        mode = glfwGetVideoMode(monitor);
         glfwSetWindowMonitor
         (
             window,
@@ -658,7 +672,220 @@ GLVFResult GlfwView::getProcAddress(int8_t* name, GLVFVoidFunction* result)
 }
 GLVFResult GlfwView::getInputDevices(uint32_t* num, GLVFInputDeviceInfo* result)
 {
-    // TODO
-    return GLVF_WARN_NOT_IMPLEMENTED;
+    uint32_t max = GLFW_JOYSTICK_LAST + 1 + 2; // 16 joysticks/gamepads, 1 mouse, 1 keyboard
+    if (!result)
+    {
+        *num = max;
+        return GLVF_OK;
+    }
+
+    int i;
+    for (i = 0; i < joysticks.size() && i < *num; i++)
+    {
+        GlfwJoystick* joystick = &joysticks[i];
+        GLVFInputDeviceInfo info;
+        info.isConnected = joystick->joystickKind != GlfwJoystickKind::Disconnected;
+        info.numButtons = joystick->buttonStates.size();
+        info.numHats = joystick->joystickHats.size();
+        info.numScalarAxes = joystick->joystickAxes.size();
+        info.numThumbsticks = joystick->gamepadThumbsticks.size();
+        info.numTriggers = joystick->gamepadTriggers.size();
+        info.subject = joystick->index;
+        info.subjectKind = mapSubject(joystick->joystickKind);
+        result[i] = info;
+    }
+
+    if ((*num - i) >= 1)
+    {
+        GLVFInputDeviceInfo info;
+        info.isConnected = true;
+        info.numButtons = GLFW_KEY_LAST + 1;
+        info.subject = 0;
+        info.subjectKind = GLVF_EVENT_SUBJECT_KEYBOARD;
+        i++;
+    }
+
+    if ((*num - i) >= 1)
+    {
+        GLVFInputDeviceInfo info;
+        info.isConnected = true;
+        info.numButtons = GLFW_MOUSE_BUTTON_LAST + 1;
+        info.subject = 0;
+        info.subjectKind = GLVF_EVENT_SUBJECT_MOUSE;
+        i++;
+    }
+
+    *num = i;
+    return i < max ? GLVF_INCOMPLETE : GLVF_OK;
+}
+void GlfwView::preEnumerateEvents()
+{
+    if (eventPump)
+    {
+        if (eventPump->waitEvents)
+        {
+            glfwWaitEvents();
+        }
+        else
+        {
+            glfwPollEvents();
+        }
+    }
+
+    for (size_t i = 0; i < joysticks.size(); i++)
+    {
+        joysticks[i].update(this);
+    }
+}
+void charCallback(GLFWwindow* window, unsigned int character)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFCharEvent event;
+    event.kind = GLVF_EVENT_KIND_KEYBOARD_KEY_CHAR;
+    event.receivedCharacter = character;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFKeyEvent event;
+    event.kind = action == GLFW_PRESS ? GLVF_EVENT_KIND_KEYBOARD_KEY_DOWN
+        : action == GLFW_RELEASE ? GLVF_EVENT_KIND_KEYBOARD_KEY_UP
+        : GLVF_EVENT_KIND_KEYBOARD_KEY_REPEAT;
+    event.key = _glvfKeyCast(key);
+    event.pressed = action == GLFW_PRESS || action == GLFW_REPEAT;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFAxisEvent event;
+    event.kind = GLVF_EVENT_KIND_MOUSE_MOVE;
+    event.axisIndex = 0;
+    event.axisKind = GLVF_AXIS_KIND_MOUSE_POSITION;
+    event.subject = 0;
+    event.subjectKind = GLVF_EVENT_SUBJECT_MOUSE;
+    event.xyState[0] = xpos;
+    event.xyState[1] = ypos;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFAxisEvent event;
+    event.kind = GLVF_EVENT_KIND_RESIZE;
+    event.axisIndex = 0;
+    event.axisKind = GLVF_AXIS_KIND_VIEW_FRAMEBUFFER_SIZE;
+    event.subject = 0;
+    event.subjectKind = GLVF_EVENT_SUBJECT_VIEW;
+    event.xyState[0] = width;
+    event.xyState[1] = height;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+
+}
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFAxisEvent event;
+    event.kind = GLVF_EVENT_KIND_MOUSE_MOVE;
+    event.axisIndex = 0;
+    event.axisKind = GLVF_AXIS_KIND_MOUSE_SCROLL_OFFSET;
+    event.subject = 0;
+    event.subjectKind = GLVF_EVENT_SUBJECT_MOUSE;
+    event.xyState[0] = xoffset;
+    event.xyState[1] = yoffset;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void windowCloseCallback(GLFWwindow* window)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFEvent event;
+    event.kind = GLVF_EVENT_KIND_USER_QUIT;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void windowIconifyCallback(GLFWwindow* window, int iconified)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFWindowStateEvent event;
+    event.kind = GLVF_EVENT_KIND_STATE_CHANGE;
+    event.newState == iconified ? GLVF_WINDOW_STATE_MINIMIZED : GLVF_WINDOW_STATE_NORMAL;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void windowMaximizeCallback(GLFWwindow* window, int maximized)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFWindowStateEvent event;
+    event.kind = GLVF_EVENT_KIND_STATE_CHANGE;
+    event.newState == maximized ? GLVF_WINDOW_STATE_MAXIMIZED : GLVF_WINDOW_STATE_NORMAL;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void windowPosCallback(GLFWwindow* window, int xpos, int ypos)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFAxisEvent event;
+    event.kind = GLVF_EVENT_KIND_MOVE;
+    event.axisIndex = 0;
+    event.axisKind = GLVF_AXIS_KIND_VIEW_POSITION;
+    event.subject = 0;
+    event.subjectKind = GLVF_EVENT_SUBJECT_VIEW;
+    event.xyState[0] = xpos;
+    event.xyState[1] = ypos;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+void windowSizeCallback(GLFWwindow* window, int width, int height)
+{
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFAxisEvent event;
+    event.kind = GLVF_EVENT_KIND_RESIZE;
+    event.axisIndex = 0;
+    event.axisKind = GLVF_AXIS_KIND_VIEW_SIZE;
+    event.subject = 0;
+    event.subjectKind = GLVF_EVENT_SUBJECT_VIEW;
+    event.xyState[0] = width;
+    event.xyState[1] = height;
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
+}
+GLVFResult GlfwView::createEventPump(const GLVFEventPumpCreateInfo* info)
+{
+    View::createEventPump(info);
+    glfwSetCharCallback(window, &charCallback);
+    glfwSetKeyCallback(window, &keyCallback);
+    glfwSetCursorPosCallback(window, &cursorPosCallback);
+    glfwSetFramebufferSizeCallback(window, &framebufferSizeCallback);
+    glfwSetMouseButtonCallback(window, &mouseButtonCallback);
+    glfwSetScrollCallback(window, &scrollCallback);
+    glfwSetWindowCloseCallback(window, &windowCloseCallback);
+    glfwSetWindowIconifyCallback(window, &windowIconifyCallback);
+    glfwSetWindowMaximizeCallback(window, &windowMaximizeCallback);
+    glfwSetWindowPosCallback(window, &windowPosCallback);
+    glfwSetWindowSizeCallback(window, &windowSizeCallback);
+}
+void GlfwView::destroyEventPump()
+{
+    glfwSetCharCallback(window, nullptr);
+    glfwSetKeyCallback(window, nullptr);
+    glfwSetCursorPosCallback(window, nullptr);
+    glfwSetFramebufferSizeCallback(window, nullptr);
+    glfwSetMouseButtonCallback(window, nullptr);
+    glfwSetScrollCallback(window, nullptr);
+    glfwSetWindowCloseCallback(window, nullptr);
+    glfwSetWindowIconifyCallback(window, nullptr);
+    glfwSetWindowMaximizeCallback(window, nullptr);
+    glfwSetWindowPosCallback(window, nullptr);
+    glfwSetWindowSizeCallback(window, nullptr);
+    View::destroyEventPump();
 }
 #endif

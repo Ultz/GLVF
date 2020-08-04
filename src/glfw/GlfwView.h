@@ -4,12 +4,14 @@
 #ifndef _GLFWVIEW_H
 #define _GLFWVIEW_H
 #include <glvf.h>
-#include "View.h"
+#include "../View.h"
+#include "GlfwJoystick.h"
 class GlfwView : public View {
 private:
 	GLFWwindow* window;
     int8_t* cachedTitle;
     bool fullscreen;
+    std::array<GlfwJoystick, GLFW_JOYSTICK_LAST + 1> joysticks;
 public:
 	GLVFResult initialize(const GLVFViewCreateInfo* info);
 	void destroying() override;
@@ -18,6 +20,7 @@ public:
 	GLVFResult getVisibility(GLVFBool* result) override;
 	GLVFResult getPosition(int32_t* result) override;
 	GLVFResult getSize(int32_t* result) override;
+    GLVFResult getFramebufferSize(int32_t* result) override;
 	GLVFResult getTitle(int8_t** result) override;
 	GLVFResult getUI(GLVFUserInterface* result) override;
 	GLVFResult getWindowState(GLVFWindowState* result) override;
@@ -42,6 +45,9 @@ public:
 		GLVFVulkanHandle* output) override;
 	GLVFResult getProcAddress(int8_t* name, GLVFVoidFunction* result) override;
 	GLVFResult getInputDevices(uint32_t* num, GLVFInputDeviceInfo* result) override;
+    void preEnumerateEvents() override;
+    GLVFResult createEventPump(const GLVFEventPumpCreateInfo* info) override;
+    void destroyEventPump() override;
 };
 #endif
 #endif

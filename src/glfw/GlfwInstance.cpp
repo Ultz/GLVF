@@ -24,24 +24,29 @@ GlfwInstance::GlfwInstance()
 	    (glfwVulkanSupported() ? GLVF_FEATURE_VULKAN_SUPPORT : 0));
 }
 
+void errorCallback(int error_code, const char* description)
+{
+    if (instance->errorPump)
+    {
+        instance->errorPump->reportError(mapGlfwErrorCode(error_code), std::to_string(error_code) + ": " + std::string(description));
+    }
+}
+
 GLVFResult GlfwInstance::createErrorPump()
 {
-	Instance::createErrorPump();
-	glfwSetErrorCallback(&errorCallback);
+	GLVFResult result = Instance::createErrorPump();
+    if (result == GLVF_OK)
+    {
+        glfwSetErrorCallback(&errorCallback);
+    }
+
+    return result;
 }
 
 void GlfwInstance::destroyErrorPump()
 {
 	Instance::destroyErrorPump();
 	glfwSetErrorCallback(NULL);
-}
-
-void errorCallback(int error_code, const char* description)
-{
-	if (instance->errorPump)
-	{
-		instance->errorPump->reportError(mapGlfwErrorCode(error_code), std::to_string(error_code) + ": " + std::string(description));
-	}
 }
 
 GLVFResult mapGlfwErrorCode(int errorCode)

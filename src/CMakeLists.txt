@@ -11,10 +11,10 @@ add_library (glvf "ErrorPump.cpp"
                   "EventPump.cpp"
                   "Instance.cpp"
                   "View.cpp"
-                  "GlfwInstance.cpp"
-                  "GlfwPlatform.cpp"
-                  "GlfwView.cpp"
-                  "glvf_impl.cpp" "Glfw.h")
+                  "glfw/GlfwInstance.cpp"
+                  "glfw/GlfwPlatform.cpp"
+                  "glfw/GlfwView.cpp"
+                  "glvf_impl.cpp" "glfw/GlfwJoystick.cpp"  "glfw/GlfwKeyCast.cpp")
 target_compile_features(glvf PUBLIC cxx_std_17)
 target_link_libraries(glvf glfw sndfile-static)
 target_include_directories(glvf 

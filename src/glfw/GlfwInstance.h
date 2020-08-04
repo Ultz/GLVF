@@ -3,7 +3,7 @@
 #pragma once
 #ifndef _GLFWINSTANCE_H
 #define _GLFWINSTANCE_H
-#include "Instance.h"
+#include "../Instance.h"
 
 Instance* instance;
 GLVFResult mapGlfwErrorCode(int errorCode);

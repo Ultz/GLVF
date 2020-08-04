@@ -44,6 +44,7 @@ enum GLVFResult {
 	GLVF_ERROR_UNDERLYING_API_ERROR,
 	GLVF_ERROR_UNSUPPORTED_FORMAT,
     GLVF_ERROR_UNKNOWN,
+    GLVF_ERROR_READ_ONLY,
 	GLVF_WARN_BAD_PARAMETER, // Only delivered via an error pump. If a bad parameter was supplied but the method made a fixup.
     GLVF_WARN_NOT_IMPLEMENTED,
 	GLVF_RESULT_FORCE_32_BIT = 2147483647

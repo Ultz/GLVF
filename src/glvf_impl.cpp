@@ -1,7 +1,7 @@
 #include <glvf.h>
 #include "Platform.h"
 #ifdef GLVF_PLATFORM_GLFW
-#include "GlfwPlatform.h"
+#include "glfw/GlfwPlatform.h"
 #endif
 
 // Implementation Internals
@@ -9,6 +9,11 @@ Platform* currentPlatform;
 
 bool _glvfEnsurePlatformCreated()
 {
+    if (CHAR_BIT * sizeof(float) != 32)
+    {
+        return false;
+    }
+
 	if (currentPlatform != nullptr)
 	{
 		return true;
@@ -31,7 +36,7 @@ GLVFResult glvfCreateInstance(GLVFInstance* output)
 		return GLVF_ERROR_NO_PLATFORM;
 	}
 
-	return currentPlatform->createInstance((Instance**)output);
+	return currentPlatform->createInstance(reinterpret_cast<Instance**>(output));
 }
 
 GLVFBool glvfIsMultiInstanceSupported()
@@ -180,7 +185,7 @@ GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state)
 	return GLVF_OK;
 }
 
-GLVFResult glvfBootstrapView(GLVFView view, GLVFMainFunction fn)
+GLVFResult glvfBootstrapView(GLVFView view, GLVFMainLoopFunction fn)
 {
 	return ((View*)view)->bootstrap(fn);
 }

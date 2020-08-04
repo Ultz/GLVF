@@ -9,14 +9,15 @@ public:
 	class Instance* instance;
 	class EventPump* eventPump;
 	std::vector<std::string> vulkanExtensions;
-	GLVFResult createEventPump(const GLVFEventPumpCreateInfo* info);
-	void destroyEventPump();
+	virtual GLVFResult createEventPump(const GLVFEventPumpCreateInfo* info);
+	virtual void destroyEventPump();
 	virtual void destroying();
 	virtual GLVFViewStatus getState() = 0;
 	virtual GLVFResult bootstrap(GLVFMainLoopFunction fn) = 0;
 	virtual GLVFResult getVisibility(GLVFBool* result) = 0;
 	virtual GLVFResult getPosition(int32_t* result) = 0;
 	virtual GLVFResult getSize(int32_t* result) = 0;
+    virtual GLVFResult getFramebufferSize(int32_t* result) = 0;
 	virtual GLVFResult getTitle(int8_t** result) = 0;
 	virtual GLVFResult getUI(GLVFUserInterface* result) = 0;
 	virtual GLVFResult getWindowState(GLVFWindowState* result) = 0;
@@ -41,5 +42,6 @@ public:
 		GLVFVulkanHandle* output) = 0;
 	virtual GLVFResult getProcAddress(int8_t* name, GLVFVoidFunction* result) = 0;
 	virtual GLVFResult getInputDevices(uint32_t* num, GLVFInputDeviceInfo* result) = 0;
+    virtual void preEnumerateEvents() = 0;
 };
 #endif

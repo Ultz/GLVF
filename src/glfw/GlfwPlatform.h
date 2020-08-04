@@ -4,7 +4,7 @@
 #ifndef _GLFWPLATFORM_H
 #define _GLFWPLATFORM_H
 #include <glvf.h>
-#include "Platform.h"
+#include "../Platform.h"
 
 class GlfwPlatform : public Platform {
 public:

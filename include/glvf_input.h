@@ -6,12 +6,12 @@
 struct GLVFInputDeviceInfo {
 	GLVFEventSubject subjectKind;
 	uint32_t subject;
-	int8_t* name;
 	GLVFBool isConnected;
 	uint32_t numThumbsticks;
 	uint32_t numTriggers;
 	uint32_t numScalarAxes;
 	uint32_t numButtons;
+    uint32_t numHats;
 };
 
 GLVFResult glvfEnumerateInputDevices(GLVFView view, uint32_t* pCount, GLVFInputDeviceInfo* pDevices);
