@@ -245,4 +245,9 @@ GLVFKey _glvfKeyCast(int key)
             return GLVF_KEY_MENU;
     }
 }
+
+GLVFButtonName _glvfMouseCast(int btn)
+{
+    return GLVFButtonName(btn);
+}
 #endif

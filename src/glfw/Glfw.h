@@ -6,5 +6,6 @@
 #define _GLVF_GLFW_H
 #include <glvf_input_enums.h>
 GLVFKey _glvfKeyCast(int key);
+GLVFButtonName _glvfMouseCast(int btn);
 #endif
 #endif

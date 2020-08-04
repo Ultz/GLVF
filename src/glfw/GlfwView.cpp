@@ -788,7 +788,14 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 }
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-
+    GlfwView* view = reinterpret_cast<GlfwView*>(glfwGetWindowUserPointer(window));
+    GLVFButtonEvent event;
+    event.kind = action == GLFW_PRESS ? GLVF_EVENT_KIND_MOUSE_BUTTON_DOWN : GLVF_EVENT_KIND_MOUSE_BUTTON_UP;
+    event.subject = 0;
+    event.subjectKind = GLVF_EVENT_SUBJECT_MOUSE;
+    event.button.name = _glvfMouseCast(button);
+    event.timestamp = std::time(nullptr);
+    view->eventPump->enqueue(*reinterpret_cast<GLVFEvent*>(&event));
 }
 void scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
 {
