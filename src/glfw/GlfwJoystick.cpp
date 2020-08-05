@@ -8,6 +8,10 @@ GlfwJoystickKind queryJoystickKind(uint32_t index)
         : GlfwJoystickKind::Disconnected;
 }
 
+GlfwJoystick::GlfwJoystick()
+{
+}
+
 GlfwJoystick::GlfwJoystick(uint32_t index)
 {
     this->index = index;

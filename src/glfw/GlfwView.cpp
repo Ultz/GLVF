@@ -5,6 +5,9 @@
 #include <ctime>
 #include "GlfwView.h"
 #include "GlfwInstance.h"
+GlfwView::GlfwView()
+{
+}
 GLVFResult GlfwView::initialize(const GLVFViewCreateInfo* info)
 {
     int width = 480;
@@ -867,18 +870,23 @@ void windowSizeCallback(GLFWwindow* window, int width, int height)
 }
 GLVFResult GlfwView::createEventPump(const GLVFEventPumpCreateInfo* info)
 {
-    View::createEventPump(info);
-    glfwSetCharCallback(window, &charCallback);
-    glfwSetKeyCallback(window, &keyCallback);
-    glfwSetCursorPosCallback(window, &cursorPosCallback);
-    glfwSetFramebufferSizeCallback(window, &framebufferSizeCallback);
-    glfwSetMouseButtonCallback(window, &mouseButtonCallback);
-    glfwSetScrollCallback(window, &scrollCallback);
-    glfwSetWindowCloseCallback(window, &windowCloseCallback);
-    glfwSetWindowIconifyCallback(window, &windowIconifyCallback);
-    glfwSetWindowMaximizeCallback(window, &windowMaximizeCallback);
-    glfwSetWindowPosCallback(window, &windowPosCallback);
-    glfwSetWindowSizeCallback(window, &windowSizeCallback);
+    GLVFResult ret = View::createEventPump(info);
+    if (ret == GLVF_OK)
+    {
+        glfwSetCharCallback(window, &charCallback);
+        glfwSetKeyCallback(window, &keyCallback);
+        glfwSetCursorPosCallback(window, &cursorPosCallback);
+        glfwSetFramebufferSizeCallback(window, &framebufferSizeCallback);
+        glfwSetMouseButtonCallback(window, &mouseButtonCallback);
+        glfwSetScrollCallback(window, &scrollCallback);
+        glfwSetWindowCloseCallback(window, &windowCloseCallback);
+        glfwSetWindowIconifyCallback(window, &windowIconifyCallback);
+        glfwSetWindowMaximizeCallback(window, &windowMaximizeCallback);
+        glfwSetWindowPosCallback(window, &windowPosCallback);
+        glfwSetWindowSizeCallback(window, &windowSizeCallback);
+    }
+
+    return ret;
 }
 void GlfwView::destroyEventPump()
 {

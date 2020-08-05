@@ -13,6 +13,7 @@ private:
     bool fullscreen;
     std::array<GlfwJoystick, GLFW_JOYSTICK_LAST + 1> joysticks;
 public:
+    GlfwView();
 	GLVFResult initialize(const GLVFViewCreateInfo* info);
 	void destroying() override;
 	GLVFViewStatus getState() override;

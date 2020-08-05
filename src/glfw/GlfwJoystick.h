@@ -37,6 +37,7 @@ enum class GlfwPosition2D {
 
 class GlfwJoystick {
 public:
+    GlfwJoystick();
     uint32_t index;
     std::map<uint32_t, bool> buttonStates;
     std::vector<float> joystickAxes;
