@@ -92,7 +92,7 @@ GLVFResult glvfEnumerateErrors(GLVFErrorPump pump, uint32_t* pCount, GLVFError* 
 
 void glvfDestroyErrorPump(GLVFErrorPump pump)
 {
-	((ErrorPump*)pump)->instance->destroyErrorPump();
+	((ErrorPump*)pump)->parentInstance->destroyErrorPump();
 }
 
 // Events
@@ -137,8 +137,9 @@ GLVFResult glvfSetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name,
 
 GLVFResult glvfEnumerateEvents(GLVFEventPump pump, uint32_t* pCount, GLVFEvent* pEvents)
 {
-	EventPump* actualPump = (EventPump*)pump;
-	if (pEvents == nullptr)
+	EventPump* actualPump = reinterpret_cast<EventPump*>(pump);
+    actualPump->view->preEnumerateEvents();
+    if (pEvents == nullptr)
 	{
 		*pCount = actualPump->getCount();
 		return GLVF_OK;

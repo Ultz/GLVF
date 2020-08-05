@@ -22,13 +22,14 @@ GlfwInstance::GlfwInstance()
 		GLVF_FEATURE_MULTIVIEW_SUPPORT |
 		GLVF_FEATURE_OPENGL_SUPPORT |
 	    (glfwVulkanSupported() ? GLVF_FEATURE_VULKAN_SUPPORT : 0));
+    errorPump = nullptr;
 }
 
 void errorCallback(int error_code, const char* description)
 {
-    if (instance->errorPump)
+    if (currentInstance->errorPump)
     {
-        instance->errorPump->reportError(mapGlfwErrorCode(error_code), std::to_string(error_code) + ": " + std::string(description));
+        currentInstance->errorPump->reportError(mapGlfwErrorCode(error_code), std::to_string(error_code) + ": " + std::string(description));
     }
 }
 
@@ -78,6 +79,7 @@ GLVFResult mapGlfwErrorCode(int errorCode)
 GLVFResult GlfwInstance::createView(const GLVFViewCreateInfo* input, View** output)
 {
 	GlfwView* view = new GlfwView();
+    view->instance = this;
 	GLVFResult ret = view->initialize(input);
 	if (ret != GLVF_OK)
 	{

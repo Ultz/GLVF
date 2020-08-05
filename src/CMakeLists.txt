@@ -3,6 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(Vulkan REQUIRED)
 
@@ -14,9 +15,11 @@ add_library (glvf "ErrorPump.cpp"
                   "glfw/GlfwInstance.cpp"
                   "glfw/GlfwPlatform.cpp"
                   "glfw/GlfwView.cpp"
-                  "glvf_impl.cpp" "glfw/GlfwJoystick.cpp"  "glfw/GlfwEnumCast.cpp")
+                  "glvf_impl.cpp"
+				  "glfw/GlfwJoystick.cpp"
+				  "glfw/GlfwEnumCast.cpp")
 target_compile_features(glvf PUBLIC cxx_std_17)
-target_link_libraries(glvf glfw sndfile-static)
+target_link_libraries(glvf PRIVATE glfw)
 target_include_directories(glvf 
  PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>

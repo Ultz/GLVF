@@ -116,7 +116,7 @@ void reportButtonUpdates(const View* view,
         {
             if (view->eventPump)
             {
-                GLVFButtonEvent event;
+                GLVFButtonEvent event = {};
                 event.button.index = GLVF_BUTTON_NAME_JOYSTICK_A - 1 - i;
                 event.kind = joystickKind == GlfwJoystickKind::Gamepad
                     ? (newButtons[i] ? GLVF_EVENT_KIND_GAMEPAD_BUTTON_DOWN : GLVF_EVENT_KIND_GAMEPAD_BUTTON_UP)
@@ -138,7 +138,7 @@ void GlfwJoystick::update(const View* view)
     {
         if (view->eventPump)
         {
-            GLVFConnectionEvent event;
+            GLVFConnectionEvent event = {};
             if (joystickKind == GlfwJoystickKind::Disconnected)
             {
                 event.isConnected = true;
@@ -204,7 +204,7 @@ void GlfwJoystick::update(const View* view)
             {
                 if (view->eventPump)
                 {
-                    GLVFAxisEvent event;
+                    GLVFAxisEvent event = {};
                     event.axisIndex = i;
                     event.axisKind = GLVF_AXIS_KIND_GAMEPAD_THUMBSTICK;
                     event.kind = GLVF_EVENT_KIND_GAMEPAD_THUMBSTICK_MOVE;
@@ -225,7 +225,7 @@ void GlfwJoystick::update(const View* view)
             {
                 if (view->eventPump)
                 {
-                    GLVFAxisEvent event;
+                    GLVFAxisEvent event = {};
                     event.axisIndex = i;
                     event.axisKind = GLVF_AXIS_KIND_GAMEPAD_TRIGGER;
                     event.kind = GLVF_EVENT_KIND_GAMEPAD_TRIGGER_MOVE;
@@ -257,7 +257,7 @@ void GlfwJoystick::update(const View* view)
             {
                 if (view->eventPump)
                 {
-                    GLVFAxisEvent event;
+                    GLVFAxisEvent event = {};
                     event.axisIndex = i;
                     event.axisKind = GLVF_AXIS_KIND_JOYSTICK;
                     event.kind = GLVF_EVENT_KIND_JOYSTICK_AXIS_MOVE;
@@ -284,7 +284,7 @@ void GlfwJoystick::update(const View* view)
             {
                 if (view->eventPump)
                 {
-                    GLVFAxisEvent event;
+                    GLVFAxisEvent event = {};
                     event.axisIndex = i;
                     event.axisKind = GLVF_AXIS_KIND_JOYSTICK_HAT;
                     event.kind = GLVF_EVENT_KIND_JOYSTICK_HAT_MOVE;

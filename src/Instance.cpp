@@ -8,7 +8,7 @@ GLVFResult Instance::createErrorPump()
 	}
 
 	errorPump = new ErrorPump();
-	errorPump->instance = this;
+	errorPump->parentInstance = this;
 	return GLVF_OK;
 }
 

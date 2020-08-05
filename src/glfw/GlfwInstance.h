@@ -5,7 +5,7 @@
 #define _GLFWINSTANCE_H
 #include "../Instance.h"
 
-Instance* instance;
+extern Instance* currentInstance;
 GLVFResult mapGlfwErrorCode(int errorCode);
 
 class GlfwInstance : public Instance

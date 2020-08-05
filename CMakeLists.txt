@@ -7,3 +7,4 @@ project ("glvf")
 
 # Include sub-projects.
 add_subdirectory ("src")
+add_subdirectory("example")

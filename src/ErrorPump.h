@@ -9,7 +9,7 @@ class ErrorPump {
 private:
 	std::vector<GLVFError> errors;
 public:
-	class Instance* instance;
+	class Instance* parentInstance;
 	void reportError(GLVFResult result, std::string message);
 	int32_t getCount();
 	int32_t get(int32_t num, GLVFError* output);
