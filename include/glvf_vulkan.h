@@ -1,6 +1,9 @@
 #pragma once
 #ifndef GLVF_VULKAN_H
 #define GLVF_VULKAN_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "glvf_view.h"
 typedef void* GLVFVulkanHandle;
 typedef void GLVFVkAllocationCallbacks;
@@ -15,4 +18,7 @@ GLVFResult glvfCreateSurface(GLVFView view,
 	const GLVFVkAllocationCallbacks* allocator,
 	uint32_t* vkResult,
 	GLVFVulkanHandle* output);
+#ifdef __cplusplus
+}
+#endif
 #endif

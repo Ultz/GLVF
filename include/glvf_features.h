@@ -2,7 +2,9 @@
 #ifndef GLVF_FEATURES_H
 #define GLVF_FEATURES_H
 #include "glvf_core.h"
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 enum GLVFFeatureFlags {
 	GLVF_FEATURE_OPENGL_SUPPORT = 1, // Allows use of OpenGL in conjunction with GLVF.
 	GLVF_FEATURE_VULKAN_SUPPORT = 2, // Allows use of Vulkan in conjunction with GLVF.
@@ -26,4 +28,7 @@ enum GLVFFeatureFlags {
 
 GLVFResult glvfQueryInstanceFeatureSupport(GLVFInstance instance, GLVFFeatureFlags* result);
 GLVFResult glvfQueryEnabledFeatures(GLVFView view, GLVFFeatureFlags* result);
+#ifdef __cplusplus
+}
+#endif
 #endif

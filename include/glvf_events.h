@@ -1,6 +1,9 @@
 #pragma once
 #ifndef GLVF_EVENTS_H
 #define GLVF_EVENTS_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "glvf_core.h"
 #include "glvf_input_enums.h"
@@ -136,4 +139,7 @@ GLVFResult glvfGetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name,
 GLVFResult glvfSetEventPumpProperty(GLVFEventPump pump, GLVFEventPumpPName name, void* value);
 GLVFResult glvfEnumerateEvents(GLVFEventPump pump, uint32_t* pCount, GLVFEvent* pEvents);
 void glvfDestroyEventPump(GLVFEventPump pump);
+#ifdef __cplusplus
+}
+#endif
 #endif

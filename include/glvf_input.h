@@ -1,6 +1,9 @@
 #pragma once
 #ifndef GLVF_INPUT_H
 #define GLVF_INPUT_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "glvf_events.h"
 #include "glvf_input_enums.h"
 struct GLVFInputDeviceInfo {
@@ -15,4 +18,7 @@ struct GLVFInputDeviceInfo {
 };
 
 GLVFResult glvfEnumerateInputDevices(GLVFView view, uint32_t* pCount, GLVFInputDeviceInfo* pDevices);
+#ifdef __cplusplus
+}
+#endif
 #endif

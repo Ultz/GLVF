@@ -1,6 +1,9 @@
 #pragma once
 #ifndef GLVF_VIEW_H
 #define GLVF_VIEW_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "glvf_core.h"
 #include "glvf_features.h"
 
@@ -116,4 +119,7 @@ GLVFResult glvfCreateView(GLVFInstance instance, const GLVFViewCreateInfo* info,
 GLVFResult glvfQueryViewStatus(GLVFView view, GLVFViewStatus* state);
 GLVFResult glvfBootstrapView(GLVFView view, GLVFMainLoopFunction fn);
 void glvfDestroyView(GLVFView view);
+#ifdef __cplusplus
+}
+#endif
 #endif

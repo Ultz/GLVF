@@ -1,6 +1,9 @@
 #pragma once
 #ifndef GLVF_INPUT_ENUMS_H
 #define GLVF_INPUT_ENUMS_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 enum GLVFKey {
     GLVF_KEY_UNKNOWN = 0,
     GLVF_KEY_SHIFT_LEFT,
@@ -195,4 +198,7 @@ enum GLVFButtonName {
     GLVF_BUTTON_NAME_JOYSTICK_START,
     GLVF_BUTTON_NAME_FORCE_32_BIT = 2147483647
 };
+#ifdef __cplusplus
+}
+#endif
 #endif
