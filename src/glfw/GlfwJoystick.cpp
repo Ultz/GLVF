@@ -1,3 +1,5 @@
+#include <glvf_core.h>
+#ifdef GLVF_PLATFORM_GLFW
 #include "GlfwJoystick.h"
 #include <ctime>
 
@@ -299,3 +301,4 @@ void GlfwJoystick::update(const View* view)
         }
     }
 }
+#endif
